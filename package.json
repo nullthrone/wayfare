@@ -64,7 +64,7 @@
     "playwright": "^1.63.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
-    "typescript": "^5",
+    "typescript": "^7",
     "vitest": "^5.0.5"
   },
   "description": "Share photo albums with friends like a postcard — via QR code. Self-hosted or on Firebase.",

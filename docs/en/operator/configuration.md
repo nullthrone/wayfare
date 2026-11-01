@@ -8,6 +8,7 @@ Booleans accept `true`, `false`, `1`, `0`. An empty value means "use the default
 
 | Key | Default | Description |
 |---|---|---|
+| `WAYFARE_ENV` | – | Optional **dotenv bundle** with any of the keys on this page (one `KEY=value` per line). Used on Firebase App Hosting, where the whole instance configuration lives in one Secret Manager secret. Real environment variables take precedence |
 | `WAYFARE_RUNTIME` | `selfhost` | `selfhost` (SQLite + local/S3) or `firebase` (Firestore + Firebase Storage) |
 | `WAYFARE_BASE_URL` | `http://localhost:3000` | Public URL without trailing slash. Used for share links, QR codes, OAuth redirects and e-mail links. Must match what users type in the browser |
 | `WAYFARE_SECRET` | *(required)* | **Secret.** At least 32 characters. Signs media URLs and cookies, encrypts stored Google tokens |
@@ -32,8 +33,8 @@ Booleans accept `true`, `false`, `1`, `0`. An empty value means "use the default
 
 | Key | Default | Description |
 |---|---|---|
-| `FIREBASE_PROJECT_ID` | *(empty)* | Firebase/Google Cloud project ID |
-| `FIREBASE_STORAGE_BUCKET` | *(empty)* | Storage bucket, e.g. `my-project.firebasestorage.app` |
+| `FIREBASE_PROJECT_ID` | *(derived)* | Firebase/Google Cloud project ID. Defaults to `FIREBASE_CONFIG.projectId` / `GOOGLE_CLOUD_PROJECT` (set automatically on App Hosting) |
+| `FIREBASE_STORAGE_BUCKET` | *(derived)* | Storage bucket. Defaults to `FIREBASE_CONFIG.storageBucket` or `<project>.firebasestorage.app` |
 | `FIREBASE_SERVICE_ACCOUNT` | *(empty)* | **Secret.** Service-account JSON (stringified). Omit to use Application Default Credentials (recommended on App Hosting) |
 
 ## Mail

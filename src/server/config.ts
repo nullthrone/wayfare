@@ -70,8 +70,55 @@ const schema = z.object({
 
 export type AppConfig = ReturnType<typeof loadConfig>;
 
+/**
+ * Minimal dotenv parser for the WAYFARE_ENV bundle: `KEY=value` per line, `#` comments,
+ * optional `export ` prefix, single/double quotes (double quotes support \n escapes).
+ */
+export function parseDotenv(src: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const raw of src.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    const m = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/.exec(line);
+    if (!m) continue;
+    let value = m[2];
+    if (value.startsWith('"') && value.endsWith('"') && value.length >= 2) {
+      value = value.slice(1, -1).replace(/\\n/g, "\n").replace(/\\"/g, '"');
+    } else if (value.startsWith("'") && value.endsWith("'") && value.length >= 2) {
+      value = value.slice(1, -1);
+    } else {
+      value = value.replace(/\s+#.*$/, "").trim();
+    }
+    out[m[1]] = value;
+  }
+  return out;
+}
+
+/**
+ * Effective environment:
+ *  1. `WAYFARE_ENV` — optional dotenv bundle (used on Firebase App Hosting, where the whole
+ *     instance configuration lives in ONE Secret Manager secret, so the committed apphosting.yaml
+ *     stays generic and forks need no file changes),
+ *  2. real environment variables override the bundle,
+ *  3. Firebase/Google defaults fill FIREBASE_PROJECT_ID / FIREBASE_STORAGE_BUCKET when unset.
+ */
+export function effectiveEnv(env: NodeJS.ProcessEnv = process.env): Record<string, string | undefined> {
+  const merged: Record<string, string | undefined> = { ...parseDotenv(env.WAYFARE_ENV ?? "") };
+  for (const [k, v] of Object.entries(env)) if (v !== undefined && v !== "" && k !== "WAYFARE_ENV") merged[k] = v;
+
+  let firebaseConfig: { projectId?: string; storageBucket?: string } = {};
+  try {
+    if (env.FIREBASE_CONFIG?.trim().startsWith("{")) firebaseConfig = JSON.parse(env.FIREBASE_CONFIG);
+  } catch {
+    // ignore malformed FIREBASE_CONFIG
+  }
+  merged.FIREBASE_PROJECT_ID ??= firebaseConfig.projectId ?? merged.GOOGLE_CLOUD_PROJECT ?? merged.GCLOUD_PROJECT;
+  if (merged.FIREBASE_PROJECT_ID) merged.FIREBASE_STORAGE_BUCKET ??= firebaseConfig.storageBucket ?? `${merged.FIREBASE_PROJECT_ID}.firebasestorage.app`;
+  return merged;
+}
+
 function loadConfig() {
-  const parsed = schema.safeParse(process.env);
+  const parsed = schema.safeParse(effectiveEnv());
   if (!parsed.success) {
     const issues = parsed.error.issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`).join("\n");
     throw new Error(`Invalid Wayfare configuration:\n${issues}`);

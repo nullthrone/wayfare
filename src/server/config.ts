@@ -18,6 +18,21 @@ const optStr = z
   .optional()
   .transform((v) => (v && v.trim() !== "" ? v.trim() : undefined));
 
+/** smtp(s)://[user[:password]@]host[:port] — validated at startup so a typo fails loudly (without echoing the secret). */
+export function isValidSmtpUrl(v: string): boolean {
+  try {
+    const u = new URL(v);
+    if (u.protocol !== "smtp:" && u.protocol !== "smtps:") return false;
+    return /^(localhost|[0-9.]+|([A-Za-z0-9-]+\.)+[A-Za-z]{2,})$/.test(u.hostname);
+  } catch {
+    return false;
+  }
+}
+
+const smtpUrl = optStr.refine((v) => v === undefined || isValidSmtpUrl(v), {
+  message: "SMTP_URL must look like smtps://user:password@smtp.example.com:465 (URL-encode special characters, e.g. @ as %40)",
+});
+
 const schema = z.object({
   WAYFARE_RUNTIME: z.enum(["selfhost", "firebase"]).default("selfhost"),
   WAYFARE_BASE_URL: z.string().url().default("http://localhost:3000"),
@@ -42,7 +57,7 @@ const schema = z.object({
   /** Optional service-account JSON (stringified). Without it, Application Default Credentials are used. */
   FIREBASE_SERVICE_ACCOUNT: optStr,
 
-  SMTP_URL: optStr,
+  SMTP_URL: smtpUrl,
   MAIL_FROM: z.string().default("Wayfare <no-reply@localhost>"),
 
   AUTH_GOOGLE_ID: optStr,

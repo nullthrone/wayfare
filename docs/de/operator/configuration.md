@@ -41,7 +41,7 @@ Boolesche Werte akzeptieren `true`, `false`, `1`, `0`. Ein leerer Wert bedeutet 
 
 | Schlüssel | Standard | Beschreibung |
 |---|---|---|
-| `SMTP_URL` | *(leer)* | **Secret.** z. B. `smtps://user:pass@smtp.example.com:465`. Leer = Mails (inkl. Magic Links) werden ins Server-Log geschrieben |
+| `SMTP_URL` | *(leer)* | **Secret.** z. B. `smtps://user:pass@smtp.example.com:465`. Leer = Mails (inkl. Magic Links) werden ins Server-Log geschrieben. Wird beim Start geprüft: Eine fehlerhafte URL stoppt die App mit einer klaren Meldung (ohne das Passwort auszugeben) |
 | `MAIL_FROM` | `Wayfare <no-reply@localhost>` | Absenderadresse und -name |
 
 ## Login-Anbieter

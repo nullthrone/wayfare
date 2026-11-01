@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { effectiveEnv, parseDotenv } from "@/server/config";
+import { effectiveEnv, isValidSmtpUrl, parseDotenv } from "@/server/config";
 
 describe("parseDotenv", () => {
   it("parses comments, quotes, export prefix and escapes", () => {
@@ -42,5 +42,20 @@ describe("effectiveEnv", () => {
     expect(effectiveEnv({ GOOGLE_CLOUD_PROJECT: "p2" } as unknown as NodeJS.ProcessEnv)).toMatchObject({ FIREBASE_PROJECT_ID: "p2", FIREBASE_STORAGE_BUCKET: "p2.firebasestorage.app" });
     expect(effectiveEnv({ FIREBASE_PROJECT_ID: "own", FIREBASE_STORAGE_BUCKET: "b", GOOGLE_CLOUD_PROJECT: "x" } as unknown as NodeJS.ProcessEnv)).toMatchObject({ FIREBASE_PROJECT_ID: "own", FIREBASE_STORAGE_BUCKET: "b" });
     expect(effectiveEnv({} as unknown as NodeJS.ProcessEnv).FIREBASE_PROJECT_ID).toBeUndefined();
+  });
+});
+
+describe("isValidSmtpUrl", () => {
+  it("accepts well-formed smtp/smtps URLs", () => {
+    expect(isValidSmtpUrl("smtps://me%40gmail.com:app-pass@smtp.gmail.com:465")).toBe(true);
+    expect(isValidSmtpUrl("smtp://user:pass@mail.example.org:587")).toBe(true);
+    expect(isValidSmtpUrl("smtp://localhost:1025")).toBe(true);
+  });
+
+  it("rejects malformed URLs", () => {
+    expect(isValidSmtpUrl("smtps://me%40gmail.com:pass@://gmail.com")).toBe(false); // real-world typo
+    expect(isValidSmtpUrl("https://smtp.example.com")).toBe(false);
+    expect(isValidSmtpUrl("smtp.gmail.com")).toBe(false);
+    expect(isValidSmtpUrl("smtps://user:pass@gmail")).toBe(false);
   });
 });

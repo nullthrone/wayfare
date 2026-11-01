@@ -41,7 +41,7 @@ Booleans accept `true`, `false`, `1`, `0`. An empty value means "use the default
 
 | Key | Default | Description |
 |---|---|---|
-| `SMTP_URL` | *(empty)* | **Secret.** e.g. `smtps://user:pass@smtp.example.com:465`. Empty = mails (incl. magic links) are written to the server log |
+| `SMTP_URL` | *(empty)* | **Secret.** e.g. `smtps://user:pass@smtp.example.com:465`. Empty = mails (incl. magic links) are written to the server log. Validated at startup: a malformed URL stops the app with a clear message (without printing the password) |
 | `MAIL_FROM` | `Wayfare <no-reply@localhost>` | Sender address and name |
 
 ## Login providers

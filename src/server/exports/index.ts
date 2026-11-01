@@ -1,7 +1,12 @@
 import "server-only";
 import type { Album } from "@/domain/types";
 import type { Theme } from "@/domain/theme";
-import { notImplemented } from "../errors";
+import { renderPostcard } from "./postcard";
+import { renderPoster } from "./posters";
+import { qrPng, qrSvg } from "./qr";
+import { renderSocialPng, renderSocialSvg } from "./social";
+import { renderStickers } from "./stickers";
+import { safeSlug } from "./text";
 
 /**
  * QR code + print/social exports.
@@ -28,6 +33,21 @@ export type ExportFormat =
   | "qr-svg"
   | "qr-png";
 
+export const EXPORT_FORMATS: readonly ExportFormat[] = [
+  "postcard-a6",
+  "stickers",
+  "poster-a4",
+  "poster-a3",
+  "social-story",
+  "social-square",
+  "qr-svg",
+  "qr-png",
+];
+
+export function isExportFormat(v: string): v is ExportFormat {
+  return (EXPORT_FORMATS as readonly string[]).includes(v);
+}
+
 export interface ExportContext {
   album: Album;
   theme: Theme;
@@ -38,7 +58,38 @@ export interface ExportContext {
   options: { shape?: "round" | "square"; type?: "png" | "svg"; showPasswordHint?: boolean };
 }
 
-export async function renderExport(format: ExportFormat, ctx: ExportContext): Promise<{ data: Buffer; contentType: string; filename: string }> {
-  void format; void ctx;
-  return notImplemented("renderExport");
+export interface ExportResult {
+  data: Buffer;
+  contentType: string;
+  filename: string;
+}
+
+const PDF = "application/pdf";
+
+export async function renderExport(format: ExportFormat, ctx: ExportContext): Promise<ExportResult> {
+  const base = `wayfare-${safeSlug(ctx.album.slug || ctx.album.title)}`;
+  switch (format) {
+    case "postcard-a6":
+      return { data: await renderPostcard(ctx), contentType: PDF, filename: `${base}-postcard-a6.pdf` };
+    case "stickers": {
+      const shape = ctx.options.shape === "square" ? "square" : "round";
+      return { data: await renderStickers({ ...ctx, options: { ...ctx.options, shape } }), contentType: PDF, filename: `${base}-stickers-${shape}.pdf` };
+    }
+    case "poster-a4":
+      return { data: await renderPoster(ctx, "a4"), contentType: PDF, filename: `${base}-poster-a4.pdf` };
+    case "poster-a3":
+      return { data: await renderPoster(ctx, "a3"), contentType: PDF, filename: `${base}-poster-a3.pdf` };
+    case "social-story":
+    case "social-square": {
+      const kind = format === "social-story" ? "story" : "square";
+      if (ctx.options.type === "svg") {
+        return { data: renderSocialSvg(ctx, kind), contentType: "image/svg+xml", filename: `${base}-${format}.svg` };
+      }
+      return { data: await renderSocialPng(ctx, kind), contentType: "image/png", filename: `${base}-${format}.png` };
+    }
+    case "qr-svg":
+      return { data: Buffer.from(qrSvg(ctx.url)), contentType: "image/svg+xml", filename: `${base}-qr.svg` };
+    case "qr-png":
+      return { data: await qrPng(ctx.url), contentType: "image/png", filename: `${base}-qr.png` };
+  }
 }

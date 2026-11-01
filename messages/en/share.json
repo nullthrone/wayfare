@@ -1,1 +1,77 @@
-{}
+{
+  "panel": {
+    "title": "Share & print",
+    "intro": "Hand out your album as a link, a QR code or a printed postcard.",
+    "qrAlt": "QR code for the album “{title}”",
+    "linkLabel": "Album link",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "copyFailed": "Copying isn't possible here – select the link and copy it by hand.",
+    "shareNative": "Share …",
+    "shareWhatsApp": "Send via WhatsApp",
+    "shareText": "Have a look at my photo album “{title}”:",
+    "shareTitle": "Photo album: {title}",
+    "passwordNote": "Your album is password protected. The QR code and the link do not contain the password – share it separately, for example in person or in a separate message.",
+    "passwordHintLabel": "Print the note “password is shared separately”",
+    "exportsTitle": "Print & post",
+    "exportsIntro": "Every file contains your album's QR code in the colours and fonts of your theme.",
+    "download": "Download",
+    "preview": "Preview"
+  },
+  "cards": {
+    "postcard": {
+      "title": "Postcard A6",
+      "description": "Front with cover photo, back with your greeting and the QR code. Includes 3 mm bleed and crop marks.",
+      "tip": "Have it printed double-sided on 300 gsm card at a copy shop or drugstore photo service (100 % size, not “fit to page”), then trim along the crop marks."
+    },
+    "stickersRound": {
+      "title": "Stickers, round",
+      "description": "12 round stickers (60 mm) with QR code and title on one A4 sheet.",
+      "tip": "Print on self-adhesive A4 label paper and cut them out. Great for gifts, invitations and photo books."
+    },
+    "stickersSquare": {
+      "title": "Stickers, square",
+      "description": "12 square stickers (60 mm) with QR code and title on one A4 sheet.",
+      "tip": "Print on self-adhesive A4 label paper and cut along the lines."
+    },
+    "posterA4": {
+      "title": "Poster A4",
+      "description": "“Scan me!” with a big QR code, title and link – ideal for table signs, doors and notice boards.",
+      "tip": "Print on regular paper (80–120 gsm) on any printer or at a copy shop."
+    },
+    "posterA3": {
+      "title": "Poster A3",
+      "description": "Like the A4 poster, but big enough to be scanned from several metres away.",
+      "tip": "Have it printed at A3 in a copy shop. Laminate it or print on film for outdoor use."
+    },
+    "socialStory": {
+      "title": "Story (1080×1920)",
+      "description": "Portrait image for Instagram, WhatsApp and Facebook stories.",
+      "tip": "Key content sits in the middle so the app's interface doesn't cover it."
+    },
+    "socialSquare": {
+      "title": "Square (1080×1080)",
+      "description": "Square image for posts, chats and newsletters.",
+      "tip": "Works in almost every messenger and network."
+    },
+    "qrPng": {
+      "title": "QR code (PNG)",
+      "description": "Just the QR code as an image with a white border, 1000+ pixels.",
+      "tip": "For use in your own documents, invitations or presentations."
+    },
+    "qrSvg": {
+      "title": "QR code (SVG)",
+      "description": "Just the QR code as a vector graphic – scales without loss.",
+      "tip": "Ideal for print shops and design tools. Keep at least 4 modules of white space around the code."
+    }
+  },
+  "formats": { "pdf": "PDF", "png": "PNG", "svg": "SVG" },
+  "exports": {
+    "scanMe": "Scan me!",
+    "scanHint": "Point your phone camera at the code.",
+    "scanMeSmall": "Scan me!",
+    "passwordHint": "Password protected – the password is shared separately.",
+    "defaultTitle": "Photo album",
+    "openAlbum": "Open album"
+  }
+}

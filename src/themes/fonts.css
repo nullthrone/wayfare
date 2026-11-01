@@ -1,0 +1,29 @@
+/*
+ * Self-hosted theme fonts (@fontsource, latin subset only — no third-party requests).
+ * Import once in the root layout:  import "@/themes/fonts.css";
+ * Only the weights the built-in themes / the Theme Builder need are loaded.
+ */
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/nunito/latin-400.css";
+@import "@fontsource/nunito/latin-700.css";
+@import "@fontsource/quicksand/latin-400.css";
+@import "@fontsource/quicksand/latin-600.css";
+@import "@fontsource/fredoka/latin-400.css";
+@import "@fontsource/fredoka/latin-600.css";
+@import "@fontsource/lora/latin-400.css";
+@import "@fontsource/lora/latin-400-italic.css";
+@import "@fontsource/lora/latin-600.css";
+@import "@fontsource/merriweather/latin-400.css";
+@import "@fontsource/merriweather/latin-700.css";
+@import "@fontsource/playfair-display/latin-400.css";
+@import "@fontsource/playfair-display/latin-600.css";
+@import "@fontsource/playfair-display/latin-400-italic.css";
+@import "@fontsource/cormorant-garamond/latin-400.css";
+@import "@fontsource/cormorant-garamond/latin-400-italic.css";
+@import "@fontsource/cormorant-garamond/latin-600.css";
+@import "@fontsource/dancing-script/latin-400.css";
+@import "@fontsource/dancing-script/latin-600.css";
+@import "@fontsource/great-vibes/latin-400.css";
+@import "@fontsource/caveat/latin-400.css";
+@import "@fontsource/caveat/latin-600.css";

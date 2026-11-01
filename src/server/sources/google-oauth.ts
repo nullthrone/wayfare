@@ -31,7 +31,9 @@ export interface OAuthState extends Record<string, unknown> {
 }
 
 export function redirectUri(): string {
-  return `${config().baseUrl}/api/sources/callback`;
+  const cfg = config();
+  const usesAuthClient = Boolean(cfg.AUTH_GOOGLE_ID) && (!cfg.GOOGLE_SOURCES_CLIENT_ID || cfg.GOOGLE_SOURCES_CLIENT_ID === cfg.AUTH_GOOGLE_ID);
+  return `${cfg.baseUrl}${usesAuthClient ? "/api/auth/callback/google" : "/api/sources/callback"}`;
 }
 
 export function googleCredentials(): { clientId: string; clientSecret: string } {

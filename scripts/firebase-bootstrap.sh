@@ -703,15 +703,18 @@ step_config() {
     done
 
     if [ "$WANT_PHOTO_IMPORT" = yes ]; then
-      info "Google photo import: add this redirect URI to your OAuth client: ${BASE_URL}/api/sources/callback"
-      note "(Reuses the Google sign-in client unless you set GOOGLE_SOURCES_CLIENT_ID/SECRET in the secret later.)"
-      info "  API key (for the Drive Picker): https://console.cloud.google.com/apis/credentials?project=$PROJECT_ID -> Create credentials -> API key"
-      if ! env_has AUTH_GOOGLE_ID; then
+      if env_has AUTH_GOOGLE_ID; then
+        ok "Google photo import reuses your Google sign-in OAuth client (${BASE_URL}/api/auth/callback/google)."
+        note "Make sure the OAuth consent screen includes the scopes 'photospicker.mediaitems.readonly' and 'drive.file'."
+      else
+        info "Google photo import: create a Web OAuth client with authorized redirect URI: ${BASE_URL}/api/sources/callback"
         ask v "OAuth client ID for photo import:" "$(env_get GOOGLE_SOURCES_CLIENT_ID)" v_nonempty
         env_set GOOGLE_SOURCES_CLIENT_ID "$v"
         ask_secret v "OAuth client secret for photo import:" v_nonempty
         env_set GOOGLE_SOURCES_CLIENT_SECRET "$v"
       fi
+      info "  API key (for the Drive Picker): https://console.cloud.google.com/apis/credentials?project=$PROJECT_ID -> Create credentials -> API key"
+      note "  (If you restrict the API key to specific APIs, include 'Google Picker API' / picker.googleapis.com.)"
       ask_secret v "GOOGLE_API_KEY (empty = skip):"
       [ -n "$v" ] && env_set GOOGLE_API_KEY "$v"
     fi

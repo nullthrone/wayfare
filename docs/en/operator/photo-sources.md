@@ -24,13 +24,13 @@ In the [Google Cloud Console](https://console.cloud.google.com) select (or creat
 
 ## 3. OAuth client
 
-*Credentials → Create credentials → OAuth client ID → Web application*. Authorized redirect URI:
+If you already use Google sign-in (`AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET`), you can leave `GOOGLE_SOURCES_CLIENT_ID` and `GOOGLE_SOURCES_CLIENT_SECRET` empty: Wayfare automatically reuses that OAuth client and its existing redirect URI (`${WAYFARE_BASE_URL}/api/auth/callback/google`).
+
+If you prefer a dedicated OAuth client for photo import (*Credentials → Create credentials → OAuth client ID → Web application*), set `GOOGLE_SOURCES_CLIENT_ID` and `GOOGLE_SOURCES_CLIENT_SECRET` and add the authorized redirect URI:
 
 ```
 ${WAYFARE_BASE_URL}/api/sources/callback
 ```
-
-Set `GOOGLE_SOURCES_CLIENT_ID` and `GOOGLE_SOURCES_CLIENT_SECRET`. If you leave them empty Wayfare falls back to `AUTH_GOOGLE_ID`/`AUTH_GOOGLE_SECRET` — then add **both** redirect URIs (`/api/auth/callback/google` and `/api/sources/callback`) to that client.
 
 ## 4. Drive Picker: API key and app ID
 

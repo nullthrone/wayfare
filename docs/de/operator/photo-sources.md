@@ -24,13 +24,13 @@ Wähle in der [Google Cloud Console](https://console.cloud.google.com) ein Proje
 
 ## 3. OAuth-Client
 
-*Anmeldedaten → Anmeldedaten erstellen → OAuth-Client-ID → Webanwendung*. Autorisierte Weiterleitungs-URI:
+Nutzt du bereits Google-Login (`AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET`), kannst du `GOOGLE_SOURCES_CLIENT_ID` und `GOOGLE_SOURCES_CLIENT_SECRET` leer lassen: Wayfare verwendet dann automatisch denselben OAuth-Client und dessen bereits hinterlegte Weiterleitungs-URI (`${WAYFARE_BASE_URL}/api/auth/callback/google`).
+
+Wenn du stattdessen einen eigenen OAuth-Client für den Foto-Import anlegen möchtest (*Anmeldedaten → Anmeldedaten erstellen → OAuth-Client-ID → Webanwendung*), setze `GOOGLE_SOURCES_CLIENT_ID` und `GOOGLE_SOURCES_CLIENT_SECRET` und trage als autorisierte Weiterleitungs-URI ein:
 
 ```
 ${WAYFARE_BASE_URL}/api/sources/callback
 ```
-
-Setze `GOOGLE_SOURCES_CLIENT_ID` und `GOOGLE_SOURCES_CLIENT_SECRET`. Lässt du sie leer, fällt Wayfare auf `AUTH_GOOGLE_ID`/`AUTH_GOOGLE_SECRET` zurück – dann trage **beide** Redirect-URIs (`/api/auth/callback/google` und `/api/sources/callback`) bei diesem Client ein.
 
 ## 4. Drive Picker: API-Schlüssel und App-ID
 

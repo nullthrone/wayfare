@@ -34,6 +34,17 @@ describe("buildAuthUrl", () => {
     expect(readState(p.get("state"))).toEqual({ userId: "u1", sourceId: "google-photos", returnTo: "/dashboard" });
   });
 
+  it("reuses /api/auth/callback/google when falling back to AUTH_GOOGLE_ID", () => {
+    delete process.env.GOOGLE_SOURCES_CLIENT_ID;
+    delete process.env.GOOGLE_SOURCES_CLIENT_SECRET;
+    process.env.AUTH_GOOGLE_ID = "shared-client.apps.googleusercontent.com";
+    process.env.AUTH_GOOGLE_SECRET = "shared-secret";
+    resetConfigForTests();
+    const url = new URL(buildAuthUrl({ userId: "u1", sourceId: "google-photos", returnTo: "/account", scopes: [PHOTOS_SCOPE] }));
+    expect(url.searchParams.get("client_id")).toBe("shared-client.apps.googleusercontent.com");
+    expect(url.searchParams.get("redirect_uri")).toBe("https://wayfare.example/api/auth/callback/google");
+  });
+
   it("rejects when the operator did not configure credentials", () => {
     delete process.env.GOOGLE_SOURCES_CLIENT_ID;
     delete process.env.AUTH_GOOGLE_ID;

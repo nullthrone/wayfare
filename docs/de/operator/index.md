@@ -42,7 +42,7 @@ Warum ein generischer `DocumentStore`? Siehe [ADR 0001](https://github.com/nullt
 | Seite | Thema |
 |---|---|
 | [Self-Hosting](./self-hosting) | Docker Compose, HTTPS-Reverse-Proxy, Backups, Updates |
-| [Firebase](./firebase) | App Hosting + Firestore + Storage, Schritt für Schritt |
+| [Firebase](./firebase) | App Hosting + Firestore + Storage: Einrichtung per Cloud-Shell-Befehl, Release-Workflow, manuelle Schritte |
 | [Konfiguration](./configuration) | Alle Umgebungsvariablen |
 | [Authentifizierung](./authentication) | Google, Apple, Facebook, Discord, Magic Link, Passkeys, Admins |
 | [Foto-Quellen](./photo-sources) | Einrichtung des Google-Fotos-/Drive-Imports |

@@ -7,10 +7,17 @@
         "firebase.json",
         "**/.*",
         "**/node_modules/**",
+        ".next/**",
         "docs/**",
         "e2e/**",
         "tests/**",
-        "data/**"
+        "data/**",
+        "data-demo/**",
+        "test-results/**",
+        "playwright-report/**",
+        "coverage/**",
+        "scripts/test/**",
+        "*.md"
       ]
     }
   ],

@@ -42,7 +42,7 @@ Why one generic `DocumentStore`? See [ADR 0001](https://github.com/nullthrone/wa
 | Page | Topic |
 |---|---|
 | [Self-hosting](./self-hosting) | Docker Compose, HTTPS reverse proxy, backups, upgrades |
-| [Firebase](./firebase) | App Hosting + Firestore + Storage, step by step |
+| [Firebase](./firebase) | App Hosting + Firestore + Storage: one-command Cloud Shell setup, release workflow, manual steps |
 | [Configuration](./configuration) | Every environment variable |
 | [Authentication](./authentication) | Google, Apple, Facebook, Discord, magic link, passkeys, admins |
 | [Photo sources](./photo-sources) | Google Photos / Drive import setup |

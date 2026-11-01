@@ -1,6 +1,6 @@
 # Configuration reference
 
-Wayfare is configured exclusively through **environment variables**, validated at start-up (`src/server/config.ts`). With Docker Compose they come from `.env`; on Firebase from `apphosting.yaml` and Secret Manager. Invalid values stop the server with a readable error list.
+Wayfare is configured exclusively through **environment variables**, validated at start-up (`src/server/config.ts`). With Docker Compose they come from `.env`; on Firebase from the `WAYFARE_ENV` secret in Secret Manager (plus the generic `apphosting.yaml`). Invalid values stop the server with a readable error list.
 
 Booleans accept `true`, `false`, `1`, `0`. An empty value means "use the default". Keys marked **secret** should never be committed.
 
@@ -14,7 +14,7 @@ Booleans accept `true`, `false`, `1`, `0`. An empty value means "use the default
 | `WAYFARE_SECRET` | *(required)* | **Secret.** At least 32 characters. Signs media URLs and cookies, encrypts stored Google tokens |
 | `WAYFARE_ADMIN_EMAILS` | *(empty)* | Comma-separated e-mail addresses that become **admin** on sign-up and sign-in. Without any admin, the first user to sign up becomes admin |
 | `WAYFARE_DEMO_MODE` | `false` | Demo mode for seeded demo data/screenshots. Never enable in production |
-| `WAYFARE_TRUSTED_PROXIES` | `1` | Number of reverse proxies in front of Wayfare that append to `X-Forwarded-For`. Used to determine the client IP for rate limiting (the N-th entry from the right). `0` = ignore the header (direct exposure, no proxy) |
+| `WAYFARE_TRUSTED_PROXIES` | `1` | Number of reverse proxies in front of Wayfare that append to `X-Forwarded-For`. Used to determine the client IP for rate limiting (the N-th entry from the right). `0` = ignore the header (direct exposure, no proxy). On Firebase App Hosting the [bootstrap script](./firebase) measures the right value (`/api/health?diag=forwarded`) and stores it in `WAYFARE_ENV` |
 | `DATA_DIR` | `./data` | Where SQLite (`wayfare.db`) and local blobs (`blobs/`) live. `/data` in the Docker image |
 
 ## Storage

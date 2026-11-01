@@ -64,14 +64,15 @@ Needs Node.js 22. Without `SMTP_URL`, magic links are printed to the console.
 
 ## ☁️ Deploy on Firebase
 
-1. Create a Firebase project on the **Blaze** plan; enable **Firestore** (native mode), **Storage** and **App Hosting**.
-2. Copy `.firebaserc.example` → `.firebaserc`, edit `apphosting.yaml` (URL, project ID, bucket).
-3. Create secrets: `firebase apphosting:secrets:set WAYFARE_SECRET` (and `CRON_SECRET`, login providers, …).
-4. Deploy the deny-all rules: `firebase deploy --only firestore:rules,firestore:indexes,storage`.
-5. Push to `main` (App Hosting rollout) or `firebase deploy --only apphosting`.
-6. Optional: a Cloud Scheduler job for the daily digest.
+Open [Google Cloud Shell](https://shell.cloud.google.com) and run the interactive, re-runnable bootstrap — it sets up the project, Firestore, a private media bucket, the `WAYFARE_ENV` config secret and an App Hosting backend, deploys Wayfare and measures the proxy setup:
 
-Full walkthrough: [Firebase guide](https://nullthrone.github.io/wayfare/en/operator/firebase).
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/nullthrone/wayfare/main/scripts/firebase-bootstrap.sh)
+```
+
+Needs the **Blaze** plan (small instances usually stay near the free quotas). Optional: a daily-digest Cloud Scheduler job and a GitHub Actions workflow that deploys on every GitHub Release (always on in this repo, opt-in in forks via `FIREBASE_DEPLOY_ENABLED`).
+
+Full walkthrough incl. manual setup: [Firebase guide](https://nullthrone.github.io/wayfare/en/operator/firebase).
 
 ## 🧱 Architecture
 

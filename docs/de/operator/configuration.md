@@ -1,6 +1,6 @@
 # Konfigurationsreferenz
 
-Wayfare wird ausschließlich über **Umgebungsvariablen** konfiguriert, die beim Start validiert werden (`src/server/config.ts`). Bei Docker Compose stammen sie aus `.env`, bei Firebase aus `apphosting.yaml` und dem Secret Manager. Ungültige Werte stoppen den Server mit einer lesbaren Fehlerliste.
+Wayfare wird ausschließlich über **Umgebungsvariablen** konfiguriert, die beim Start validiert werden (`src/server/config.ts`). Bei Docker Compose stammen sie aus `.env`, bei Firebase aus dem Secret `WAYFARE_ENV` im Secret Manager (plus der generischen `apphosting.yaml`). Ungültige Werte stoppen den Server mit einer lesbaren Fehlerliste.
 
 Boolesche Werte akzeptieren `true`, `false`, `1`, `0`. Ein leerer Wert bedeutet „Standard verwenden“. Mit **Secret** markierte Schlüssel gehören nie ins Repository.
 
@@ -14,7 +14,7 @@ Boolesche Werte akzeptieren `true`, `false`, `1`, `0`. Ein leerer Wert bedeutet 
 | `WAYFARE_SECRET` | *(Pflicht)* | **Secret.** Mindestens 32 Zeichen. Signiert Medien-URLs und Cookies, verschlüsselt gespeicherte Google-Tokens |
 | `WAYFARE_ADMIN_EMAILS` | *(leer)* | Kommagetrennte E-Mail-Adressen, die bei Registrierung und Anmeldung **Admin** werden. Gibt es noch keinen Admin, wird der erste registrierte Nutzer Admin |
 | `WAYFARE_DEMO_MODE` | `false` | Demo-Modus für Demodaten/Screenshots. Niemals in Produktion aktivieren |
-| `WAYFARE_TRUSTED_PROXIES` | `1` | Anzahl der Reverse Proxies vor Wayfare, die an `X-Forwarded-For` anhängen. Bestimmt die Client-IP fürs Rate-Limiting (der N-te Eintrag von rechts). `0` = Header ignorieren (direkt erreichbar, kein Proxy) |
+| `WAYFARE_TRUSTED_PROXIES` | `1` | Anzahl der Reverse Proxies vor Wayfare, die an `X-Forwarded-For` anhängen. Bestimmt die Client-IP fürs Rate-Limiting (der N-te Eintrag von rechts). `0` = Header ignorieren (direkt erreichbar, kein Proxy). Auf Firebase App Hosting misst das [Bootstrap-Skript](./firebase) den richtigen Wert (`/api/health?diag=forwarded`) und speichert ihn in `WAYFARE_ENV` |
 | `DATA_DIR` | `./data` | Ablageort von SQLite (`wayfare.db`) und lokalen Blobs (`blobs/`). Im Docker-Image `/data` |
 
 ## Speicher

@@ -42,7 +42,7 @@ For **AWS S3** leave `S3_ENDPOINT` empty, set the real region (e.g. `eu-central-
 ```ini
 STORAGE_DRIVER=firebase
 FIREBASE_PROJECT_ID=...
-FIREBASE_STORAGE_BUCKET=my-project.firebasestorage.app
+FIREBASE_STORAGE_BUCKET=my-project.firebasestorage.app   # or a private bucket, e.g. my-project-wayfare-media
 ```
 
 Default when `WAYFARE_RUNTIME=firebase`. Access uses the Admin SDK; `storage.rules` deny all direct client access. See [Firebase](./firebase). You can also combine the Firebase runtime with `STORAGE_DRIVER=s3` (e.g. R2 for cheaper egress).

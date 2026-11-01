@@ -1,0 +1,175 @@
+name: Firebase release
+
+# Deploys Wayfare to Firebase App Hosting (+ Firestore rules/indexes) when a GitHub Release is
+# published, or manually via "Run workflow".
+#
+# Activation
+#   - Always on in the maintainer's repository (nullthrone/wayfare).
+#   - Opt-in everywhere else (forks, clones): set the repository VARIABLE FIREBASE_DEPLOY_ENABLED=true
+#     (Settings -> Secrets and variables -> Actions -> Variables). Otherwise the run only prints a hint.
+#
+# Repository variables (not secrets - none of them is confidential):
+#   FIREBASE_PROJECT_ID   required   Google Cloud / Firebase project ID
+#   GCP_WIF_PROVIDER      required   projects/<number>/locations/global/workloadIdentityPools/<pool>/providers/<provider>
+#   GCP_DEPLOY_SA         required   deploy service account e-mail (e.g. wayfare-deployer@<project>.iam.gserviceaccount.com)
+#   APPHOSTING_BACKEND    optional   backend ID (default: wayfare)
+#   APPHOSTING_REGION     optional   backend region; needed to derive the URL for the smoke test
+#   WAYFARE_PUBLIC_URL    optional   smoke-test base URL, e.g. your custom domain (overrides the derived *.hosted.app URL)
+#   FIREBASE_DEPLOY_STORAGE_RULES optional  "true" to also deploy storage.rules (only meaningful if the
+#                                    Firebase *default* bucket is linked; the bootstrap script uses a plain GCS bucket
+#                                    that Firebase rules do not govern, so this stays off by default)
+# scripts/firebase-bootstrap.sh creates the workload identity federation (WIF) setup and can set these for you.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref (tag/branch/SHA) to deploy. Empty = the ref the workflow was started on."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-release
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: Check activation
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        env:
+          IS_MAINTAINER_REPO: ${{ github.repository == 'nullthrone/wayfare' }}
+          OPT_IN: ${{ vars.FIREBASE_DEPLOY_ENABLED }}
+        run: |
+          if [ "$IS_MAINTAINER_REPO" = "true" ] || [ "$OPT_IN" = "true" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Firebase deploy skipped"
+              echo
+              echo "This repository is not set up for automatic Firebase deployments. To enable it:"
+              echo
+              echo "1. Run the bootstrap script in Google Cloud Shell - it can configure everything below for you:"
+              echo "   \`bash <(curl -fsSL https://raw.githubusercontent.com/nullthrone/wayfare/main/scripts/firebase-bootstrap.sh)\`"
+              echo "2. Or set these **repository variables** (Settings -> Secrets and variables -> Actions -> Variables):"
+              echo "   \`FIREBASE_DEPLOY_ENABLED=true\`, \`FIREBASE_PROJECT_ID\`, \`GCP_WIF_PROVIDER\`, \`GCP_DEPLOY_SA\`"
+              echo "   (optional: \`APPHOSTING_BACKEND\`, \`APPHOSTING_REGION\`, \`WAYFARE_PUBLIC_URL\`)."
+              echo
+              echo "Docs: https://nullthrone.github.io/wayfare/en/operator/firebase"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice::Firebase deploy skipped: set the repository variable FIREBASE_DEPLOY_ENABLED=true to enable it (see the job summary)."
+          fi
+
+  deploy:
+    name: Deploy to Firebase
+    needs: gate
+    if: needs.gate.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: production # add protection rules (required reviewers, ...) in Settings -> Environments
+    permissions:
+      contents: read
+      id-token: write # OIDC token for workload identity federation
+    env:
+      PROJECT: ${{ vars.FIREBASE_PROJECT_ID }}
+      WIF_PROVIDER: ${{ vars.GCP_WIF_PROVIDER }}
+      DEPLOY_SA: ${{ vars.GCP_DEPLOY_SA }}
+      BACKEND: ${{ vars.APPHOSTING_BACKEND || 'wayfare' }}
+      REGION: ${{ vars.APPHOSTING_REGION }}
+      PUBLIC_URL: ${{ vars.WAYFARE_PUBLIC_URL }}
+      DEPLOY_STORAGE_RULES: ${{ vars.FIREBASE_DEPLOY_STORAGE_RULES }}
+      NEXT_TELEMETRY_DISABLED: "1"
+      WAYFARE_SECRET: ci-dummy-secret-0123456789-0123456789-abcdef # tests only
+    steps:
+      - name: Check required repository variables
+        run: |
+          missing=""
+          [ -n "$PROJECT" ] || missing="$missing FIREBASE_PROJECT_ID"
+          [ -n "$WIF_PROVIDER" ] || missing="$missing GCP_WIF_PROVIDER"
+          [ -n "$DEPLOY_SA" ] || missing="$missing GCP_DEPLOY_SA"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository variable(s):$missing. Set them under Settings -> Secrets and variables -> Actions -> Variables (or run scripts/firebase-bootstrap.sh)."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Fail before deploying anything.
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+      - id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOY_SA }}
+          create_credentials_file: true # exports GOOGLE_APPLICATION_CREDENTIALS, picked up by firebase-tools
+
+      - name: Deploy (Firestore rules/indexes + App Hosting)
+        run: |
+          targets="firestore:rules,firestore:indexes,apphosting:${BACKEND}"
+          if [ "$DEPLOY_STORAGE_RULES" = "true" ]; then targets="$targets,storage"; fi
+          # No --force: it would also delete Firestore indexes that exist in the project but not in
+          # firestore.indexes.json. Non-interactive mode never prompts.
+          npx --yes firebase-tools@15 deploy --only "$targets" --project "$PROJECT" --non-interactive
+
+      - name: Smoke test (/api/health)
+        id: smoke
+        run: |
+          if [ -n "$PUBLIC_URL" ]; then
+            url="${PUBLIC_URL%/}"
+          elif [ -n "$REGION" ]; then
+            url="https://${BACKEND}--${PROJECT}.${REGION}.hosted.app"
+          else
+            echo "::warning::Neither WAYFARE_PUBLIC_URL nor APPHOSTING_REGION is set - skipping the smoke test."
+            echo "url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          deadline=$((SECONDS + 600))
+          while true; do
+            code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' "$url/api/health" || true)
+            echo "GET $url/api/health -> ${code:-000}"
+            [ "$code" = "200" ] && exit 0
+            if [ "$SECONDS" -ge "$deadline" ]; then
+              echo "::error::$url/api/health did not return 200 within 10 minutes (last status: ${code:-000}). Check the rollout in the Firebase console (App Hosting)."
+              exit 1
+            fi
+            sleep 15
+          done
+
+      - name: Summary
+        if: always() && steps.smoke.outcome != 'skipped'
+        env:
+          URL: ${{ steps.smoke.outputs.url }}
+          OUTCOME: ${{ steps.smoke.outcome }}
+          REF_NAME: ${{ inputs.ref || github.ref_name }}
+        run: |
+          {
+            echo "### Firebase release: ${OUTCOME}"
+            echo
+            echo "- Version: \`${REF_NAME}\` (\`${GITHUB_SHA::7}\`)"
+            echo "- Project: \`${PROJECT}\`, backend: \`${BACKEND}\`"
+            if [ -n "$URL" ]; then echo "- URL: ${URL}"; fi
+            echo
+            echo "_The smoke test only checks that /api/health answers 200; during a rollout this can still be the previous revision._"
+          } >> "$GITHUB_STEP_SUMMARY"

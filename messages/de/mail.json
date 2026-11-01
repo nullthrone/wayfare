@@ -1,1 +1,29 @@
-{}
+{
+  "footer": "Du erhältst diese E-Mail, weil Benachrichtigungen für eines deiner Alben aktiviert sind. Das kannst du in den Albumeinstellungen ändern.",
+  "newComment": {
+    "subject": "Neuer Kommentar in „{album}“",
+    "body": "Hallo {name},\n\nes gibt einen neuen Kommentar in deinem Album „{album}“:\n\n{summary}\n\nZum Dashboard: {url}\n\nDein Wayfare"
+  },
+  "guestUpload": {
+    "subject": "Neues Foto wartet auf Freigabe in „{album}“",
+    "body": "Hallo {name},\n\nein Gast hat ein Foto in dein Album „{album}“ hochgeladen. Es wartet auf deine Freigabe:\n\n{summary}\n\nPrüfe es in deinem Dashboard: {url}\n\nDein Wayfare"
+  },
+  "report": {
+    "subject": "Ein Kommentar in „{album}“ wurde gemeldet",
+    "body": "Hallo {name},\n\nein Kommentar in deinem Album „{album}“ wurde gemeldet:\n\n{summary}\n\nBitte prüfe ihn in deinem Dashboard: {url}\n\nDein Wayfare"
+  },
+  "digest": {
+    "subject": "Deine tägliche Wayfare-Zusammenfassung ({count})",
+    "kind": {
+      "newComment": "Kommentar",
+      "guestUpload": "Gäste-Upload",
+      "report": "Meldung"
+    },
+    "albumHeading": "{album} ({count})",
+    "body": "Hallo {name},\n\nhier ist, was in deinen Alben passiert ist:\n\n{items}\n\nZum Dashboard: {url}\n\nDein Wayfare"
+  },
+  "invite": {
+    "subject": "Du bist zu {instance} eingeladen",
+    "body": "Hallo,\n\n{inviter} hat dich eingeladen, auf {instance} Alben zu erstellen.\n\nNimm die Einladung hier an (gültig für {days} Tage):\n{url}\n\nDein Wayfare"
+  }
+}

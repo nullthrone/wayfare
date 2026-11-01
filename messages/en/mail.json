@@ -1,1 +1,29 @@
-{}
+{
+  "footer": "You receive this e-mail because notifications are enabled for one of your albums. You can change this in the album settings.",
+  "newComment": {
+    "subject": "New comment in \"{album}\"",
+    "body": "Hi {name},\n\nthere is a new comment in your album \"{album}\":\n\n{summary}\n\nOpen your dashboard: {url}\n\nYour Wayfare"
+  },
+  "guestUpload": {
+    "subject": "New photo waiting for approval in \"{album}\"",
+    "body": "Hi {name},\n\na guest uploaded a photo to your album \"{album}\" and it is waiting for your approval:\n\n{summary}\n\nReview it in your dashboard: {url}\n\nYour Wayfare"
+  },
+  "report": {
+    "subject": "A comment was reported in \"{album}\"",
+    "body": "Hi {name},\n\na comment in your album \"{album}\" was reported:\n\n{summary}\n\nPlease review it in your dashboard: {url}\n\nYour Wayfare"
+  },
+  "digest": {
+    "subject": "Your Wayfare daily digest ({count})",
+    "kind": {
+      "newComment": "Comment",
+      "guestUpload": "Guest upload",
+      "report": "Report"
+    },
+    "albumHeading": "{album} ({count})",
+    "body": "Hi {name},\n\nhere is what happened in your albums:\n\n{items}\n\nOpen your dashboard: {url}\n\nYour Wayfare"
+  },
+  "invite": {
+    "subject": "You are invited to {instance}",
+    "body": "Hi,\n\n{inviter} invited you to become an album owner on {instance}.\n\nAccept the invitation here (valid for {days} days):\n{url}\n\nYour Wayfare"
+  }
+}

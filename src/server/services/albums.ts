@@ -20,6 +20,7 @@ import {
   requireAlbumById,
 } from "../repo";
 import { hasRole } from "./session";
+import { listAvailableThemes } from "./themes";
 
 /**
  * Album management (owner side) and public album access (viewer side).
@@ -53,7 +54,7 @@ export interface AlbumSettingsInput {
 
 const generateSlug = customAlphabet("23456789abcdefghjkmnpqrstuvwxyz", 10);
 
-const MIN_PASSWORD = 4;
+const MIN_PASSWORD = 6;
 const MAX_PASSWORD = 200;
 const UNLOCK_COOKIE_PREFIX = "wf_unlock_";
 const UNLOCK_MAX_AGE = 30 * 24 * 60 * 60;
@@ -117,9 +118,16 @@ export async function listAlbumsForOwner(actor: SessionUser): Promise<Album[]> {
   return docs.map(normalizeAlbum);
 }
 
+/** Owners may only use built-ins, their own custom themes and themes published by an admin. */
+async function assertThemeAvailable(actor: SessionUser, themeId: string): Promise<void> {
+  const available = await listAvailableThemes(actor);
+  if (!available.some((t) => t.id === themeId)) throw invalid("themeNotAvailable");
+}
+
 export async function createAlbum(actor: SessionUser, input: CreateAlbumInput): Promise<Album> {
   if (!hasRole(actor, "owner")) throw forbidden();
   const data = parseOrThrow(createSchema, input);
+  await assertThemeAvailable(actor, data.themeId);
   const now = nowIso();
   const album: Album = {
     id: nanoid(),
@@ -162,7 +170,10 @@ export async function updateAlbumSettings(actor: SessionUser, albumId: string, i
   if (data.title !== undefined) patch.title = data.title;
   if (data.message !== undefined) patch.message = data.message;
   if (data.status !== undefined) patch.status = data.status;
-  if (data.themeId !== undefined) patch.themeId = data.themeId;
+  if (data.themeId !== undefined && data.themeId !== album.themeId) {
+    await assertThemeAvailable(actor, data.themeId);
+    patch.themeId = data.themeId;
+  }
   if (data.downloadsAllowed !== undefined) patch["downloads.allowed"] = data.downloadsAllowed;
   if (data.watermark !== undefined) patch["downloads.watermark"] = data.watermark;
   if (data.watermarkText !== undefined) patch["downloads.watermarkText"] = data.watermarkText;
@@ -294,7 +305,9 @@ export async function resolveAlbumAccess(slug: string, viewer: SessionUser | nul
 // scrypt cost per attempt does the rest. Keys are hashes and never persisted.
 const UNLOCK_WINDOW_MS = 10 * 60 * 1000;
 const UNLOCK_MAX_PER_VISITOR = 10;
-const UNLOCK_MAX_PER_ALBUM = 100;
+/** Above this many attempts per album and window, every further attempt is slowed down (never blocked). */
+const UNLOCK_SLOWDOWN_PER_ALBUM = 100;
+const UNLOCK_SLOWDOWN_MS = 2000;
 const attempts = new Map<string, { count: number; resetAt: number }>();
 
 function hit(key: string, max: number, now: number): boolean {
@@ -317,10 +330,24 @@ export function resetUnlockRateLimitForTests() {
   attempts.clear();
 }
 
+/**
+ * Client IP as seen by the closest trusted proxy. X-Forwarded-For is client-controlled on the LEFT;
+ * each trusted proxy appends the address it received the request from on the RIGHT. With N trusted
+ * proxies, the N-th entry from the right is the real client. N = 0 ignores the header entirely.
+ */
+export function clientIp(h: Headers, trustedProxies: number): string {
+  if (trustedProxies <= 0) return "";
+  const chain = (h.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  return chain.length >= trustedProxies ? chain[chain.length - trustedProxies] : (chain[0] ?? "");
+}
+
 async function visitorFingerprint(): Promise<string> {
   try {
     const h = await headers();
-    const ip = (h.get("x-forwarded-for")?.split(",")[0] ?? h.get("x-real-ip") ?? "").trim();
+    const ip = clientIp(h, config().WAYFARE_TRUSTED_PROXIES);
     return createHash("sha256")
       .update(`${ip}|${h.get("user-agent") ?? ""}|${h.get("accept-language") ?? ""}`)
       .digest("hex")
@@ -330,7 +357,7 @@ async function visitorFingerprint(): Promise<string> {
   }
 }
 
-/** Verifies password (constant-time), sets the unlock cookie. Rate-limited per album+visitor (IP-hash) and per album. */
+/** Verifies password (constant-time), sets the unlock cookie. Rate-limited per album+visitor (IP-hash), slowed down per album. */
 export async function unlockAlbum(slug: string, password: string): Promise<boolean> {
   const album = await getAlbumBySlug(slug);
   if (!album || album.status !== "published" || isExpired(album) || album.access.mode !== "password" || !album.access.passwordHash) return false;
@@ -339,8 +366,9 @@ export async function unlockAlbum(slug: string, password: string): Promise<boole
   pruneAttempts(now);
   const visitorKey = `${album.id}:${await visitorFingerprint()}`;
   const okVisitor = hit(visitorKey, UNLOCK_MAX_PER_VISITOR, now);
-  const okAlbum = hit(`album:${album.id}`, UNLOCK_MAX_PER_ALBUM, now);
-  if (!okVisitor || !okAlbum) throw limitExceeded("rateLimited");
+  if (!okVisitor) throw limitExceeded("rateLimited");
+  // Album-wide: slow down instead of blocking, so an attacker cannot lock legitimate guests out.
+  if (!hit(`album:${album.id}`, UNLOCK_SLOWDOWN_PER_ALBUM, now)) await new Promise((r) => setTimeout(r, UNLOCK_SLOWDOWN_MS));
 
   if (typeof password !== "string" || password.length === 0 || password.length > MAX_PASSWORD) return false;
   const ok = await verifyPassword(password, album.access.passwordHash);

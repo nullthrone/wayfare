@@ -7,6 +7,7 @@ vi.mock("@/server/services/themes", async () => (await import("./fakes")).themes
 
 import { AppError } from "@/server/errors";
 import {
+  clientIp,
   createAlbum,
   deleteAlbum,
   getAlbumForOwner,
@@ -100,7 +101,7 @@ describe("updateAlbumSettings", () => {
     const { owner, album } = await setup();
     await expect(updateAlbumSettings(owner, album.id, { accessMode: "password" })).rejects.toMatchObject({ messageKey: "passwordRequired" });
     await expect(updateAlbumSettings(owner, album.id, { accessMode: "password", password: "abc" })).rejects.toMatchObject({ messageKey: "passwordTooShort" });
-    await expect(updateAlbumSettings(owner, album.id, { password: "abcd" })).rejects.toMatchObject({ messageKey: "passwordNotAllowed" });
+    await expect(updateAlbumSettings(owner, album.id, { password: "abcdef" })).rejects.toMatchObject({ messageKey: "passwordNotAllowed" });
 
     const a1 = await updateAlbumSettings(owner, album.id, { accessMode: "password", password: "secret" });
     expect(a1.access.mode).toBe("password");
@@ -205,6 +206,30 @@ describe("unlockAlbum", () => {
     const { album } = await protectedAlbum();
     for (let i = 0; i < 10; i++) expect(await unlockAlbum(album.slug, "bad" + i)).toBe(false);
     await expect(unlockAlbum(album.slug, "hunter22")).rejects.toMatchObject({ code: "limit", messageKey: "rateLimited" });
+  });
+
+  it("cannot be bypassed by spoofing the left-most X-Forwarded-For entry (1 trusted proxy)", async () => {
+    const { album } = await protectedAlbum();
+    for (let i = 0; i < 10; i++) {
+      ctx.requestHeaders = new Headers({ "user-agent": "vitest", "x-forwarded-for": `10.0.0.${i}, 203.0.113.7` });
+      expect(await unlockAlbum(album.slug, "bad" + i)).toBe(false);
+    }
+    ctx.requestHeaders = new Headers({ "user-agent": "vitest", "x-forwarded-for": "10.9.9.9, 203.0.113.7" });
+    await expect(unlockAlbum(album.slug, "hunter22")).rejects.toMatchObject({ messageKey: "rateLimited" });
+    // a different real client is not affected
+    ctx.requestHeaders = new Headers({ "user-agent": "vitest", "x-forwarded-for": "198.51.100.1" });
+    expect(await unlockAlbum(album.slug, "hunter22")).toBe(true);
+  });
+});
+
+describe("clientIp", () => {
+  it("takes the N-th entry from the right", () => {
+    const h = new Headers({ "x-forwarded-for": "spoofed, 1.1.1.1, 2.2.2.2" });
+    expect(clientIp(h, 1)).toBe("2.2.2.2");
+    expect(clientIp(h, 2)).toBe("1.1.1.1");
+    expect(clientIp(h, 0)).toBe("");
+    expect(clientIp(new Headers({ "x-forwarded-for": "9.9.9.9" }), 3)).toBe("9.9.9.9");
+    expect(clientIp(new Headers(), 1)).toBe("");
   });
 });
 

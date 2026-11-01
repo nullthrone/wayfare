@@ -13,6 +13,7 @@ Booleans accept `true`, `false`, `1`, `0`. An empty value means "use the default
 | `WAYFARE_SECRET` | *(required)* | **Secret.** At least 32 characters. Signs media URLs and cookies, encrypts stored Google tokens |
 | `WAYFARE_ADMIN_EMAILS` | *(empty)* | Comma-separated e-mail addresses that become **admin** on sign-up and sign-in. Without any admin, the first user to sign up becomes admin |
 | `WAYFARE_DEMO_MODE` | `false` | Demo mode for seeded demo data/screenshots. Never enable in production |
+| `WAYFARE_TRUSTED_PROXIES` | `1` | Number of reverse proxies in front of Wayfare that append to `X-Forwarded-For`. Used to determine the client IP for rate limiting (the N-th entry from the right). `0` = ignore the header (direct exposure, no proxy) |
 | `DATA_DIR` | `./data` | Where SQLite (`wayfare.db`) and local blobs (`blobs/`) live. `/data` in the Docker image |
 
 ## Storage
@@ -58,8 +59,8 @@ A social provider is enabled when both ID and secret are set. See [Authenticatio
 | `AUTH_DISCORD_ID` | *(empty)* | Discord application client ID |
 | `AUTH_DISCORD_SECRET` | *(empty)* | **Secret.** Discord client secret |
 | `AUTH_PASSKEY` | `true` | Allow passkeys (WebAuthn). Requires HTTPS and a stable domain |
-| `AUTH_MAGIC_LINK` | `true` | Sign in via e-mail link. Needs `SMTP_URL` for real delivery |
-| `AUTH_EMAIL_PASSWORD` | `false` | Classic e-mail + password sign-in |
+| `AUTH_MAGIC_LINK` | `true` | Sign in via e-mail link. In production it is only offered when `SMTP_URL` is set (otherwise links would end up in the logs) |
+| `AUTH_EMAIL_PASSWORD` | `false` | Classic e-mail + password sign-in. New accounts must confirm their e-mail address (needs `SMTP_URL`) |
 
 ## Photo sources (Google)
 

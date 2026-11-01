@@ -78,7 +78,7 @@
       },
       "password": "Passwort",
       "newPassword": "Neues Passwort",
-      "passwordHint": "Mindestens 4 Zeichen. Gib das Passwort separat weiter.",
+      "passwordHint": "Mindestens 6 Zeichen. Gib das Passwort separat weiter.",
       "passwordKeep": "Leer lassen, um das aktuelle Passwort zu behalten.",
       "passwordWarning": "Wenn du das Passwort änderst, werden alle Personen abgemeldet, die das Album bereits geöffnet haben.",
       "expires": "Ablaufdatum",

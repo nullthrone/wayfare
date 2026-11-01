@@ -12,8 +12,8 @@ with `<provider>` = `google`, `apple`, `facebook` or `discord`. Example: `https:
 
 ## Admin bootstrap
 
-- Everyone whose e-mail is in `WAYFARE_ADMIN_EMAILS` (comma-separated) becomes **admin** on sign-up and is promoted on the next sign-in.
-- If no admin exists at all, the **first user** to sign up becomes admin.
+- Everyone whose e-mail is in `WAYFARE_ADMIN_EMAILS` (comma-separated) becomes **admin** — but only with a **verified** address (social login, magic link or a confirmed e-mail/password account). Registering such an address without verifying it grants nothing.
+- Only if `WAYFARE_ADMIN_EMAILS` is **empty**, the very first account of an empty instance becomes admin (a warning is logged). Recommendation: always set `WAYFARE_ADMIN_EMAILS` before the instance is reachable.
 - Afterwards admins promote other users in **/admin → Users** and choose the onboarding mode.
 
 ## E-mail and password

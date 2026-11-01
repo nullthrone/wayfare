@@ -238,6 +238,7 @@ export const THEME_REACTIONS = [
 ];
 export const themesMock = {
   resolveTheme: vi.fn(async () => ({ id: "builtin:neutral", reactions: THEME_REACTIONS })),
+  listAvailableThemes: vi.fn(async () => ["builtin:neutral", "builtin:travel", "t"].map((id) => ({ id, reactions: THEME_REACTIONS }))),
 };
 
 // ------------------------------------------------------------------ data helpers

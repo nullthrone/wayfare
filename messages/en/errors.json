@@ -18,7 +18,7 @@
   "watermarkTextTooLong": "The watermark text is too long (max. 80 characters).",
   "guestLimitInvalid": "The upload limit per guest must be between 0 and 500.",
   "passwordRequired": "Please set a password for this album.",
-  "passwordTooShort": "The password must be at least 4 characters long.",
+  "passwordTooShort": "The password must be at least 6 characters long.",
   "passwordTooLong": "The password is too long.",
   "passwordNotAllowed": "A password can only be set when the access mode is \"password\".",
   "photoNotFound": "This photo does not exist.",
@@ -63,5 +63,9 @@
   "emailInvalid": "Please enter a valid e-mail address.",
   "userNotFound": "This user does not exist.",
   "lastAdmin": "The last administrator cannot be demoted or deleted.",
-  "cannotBanSelf": "You cannot block yourself."
+  "cannotBanSelf": "You cannot block yourself.",
+  "lengthRequired": "The upload could not be processed (missing size information). Please try again.",
+  "tooManyFiles": "Too many files in one upload. Please upload at most 10 files at once.",
+  "crossOrigin": "This request was blocked for security reasons.",
+  "themeNotAvailable": "This theme is not available."
 }

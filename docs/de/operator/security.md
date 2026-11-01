@@ -3,15 +3,17 @@
 ## Sicherheitsmodell
 
 - **Album-Zugriff** – Alben liegen unter `/a/{slug}`. Der Slug besteht aus 10 Zufallszeichen eines 31er-Alphabets (~50 Bit) und lässt sich nicht aufzählen. Entwürfe sind für alle außer Owner und Admins unsichtbar.
-- **Passwort-Alben** – Passwörter werden als **scrypt**-Hash gespeichert. Ein korrektes Passwort setzt ein signiertes Cookie, das an die `passwordVersion` des Albums gebunden ist; eine Passwortänderung macht alle Freischalt-Cookies ungültig. Versuche sind ratenbegrenzt.
-- **Widerruf** – Das Rotieren des Slugs macht alle QR-Codes und Links auf einen Schlag ungültig. Ablaufdaten werden bei jeder Anfrage geprüft.
+- **Passwort-Alben** – Passwörter werden als **scrypt**-Hash gespeichert. Ein korrektes Passwort setzt ein signiertes Cookie, das an die `passwordVersion` des Albums gebunden ist; eine Passwortänderung macht alle Freischalt-Cookies ungültig. Mindestlänge 6 Zeichen. Versuche sind pro Besucher begrenzt (10 pro 10 Minuten, Client-IP über `WAYFARE_TRUSTED_PROXIES`); ab 100 Versuchen pro Album wird jeder Versuch verlangsamt statt legitime Gäste auszusperren. Die Zähler liegen pro Prozess im Speicher.
+- **Widerruf** – Das Rotieren des Slugs macht alle QR-Codes und Links auf einen Schlag ungültig – auch bereits ausgelieferte Medien-URLs (Signaturen sind an Slug und `passwordVersion` gebunden). Ablaufdaten werden bei jeder Anfrage geprüft.
 - **Medienauslieferung** – Fotos werden nur über `/api/media/{photoId}/{variant}?exp&sig` (HMAC-signiert, kurze Gültigkeit) ausgeliefert, nachdem der Albumzugriff erneut geprüft wurde. Originale gibt es nur, wenn der Owner Downloads erlaubt. Antworten nutzen `Cache-Control: private`.
 - **Download-Schutz** – Was er leistet und wo er endet, steht im [Benutzerhandbuch](../guide/download-protection): Screenshots lassen sich nicht verhindern.
 - **Autorisierung** wird in der Service-Schicht durchgesetzt, nicht nur in Seiten. Rollen: Viewer < Owner < Admin.
 - **Secrets** – Google-Tokens für Foto-Quellen werden mit AES-256-GCM verschlüsselt, mit einem aus `WAYFARE_SECRET` abgeleiteten Schlüssel. Wird das Secret rotiert, werden Sitzungen und gespeicherte Verbindungen ungültig.
 - **Cloud-Regeln** – `firestore.rules` und `storage.rules` verbieten jeden Client-Zugriff; der Server nutzt das Admin SDK.
 - **Header** – `X-Content-Type-Options`, `X-Frame-Options: DENY`, strenge `Referrer-Policy`, restriktive `Permissions-Policy`; Album-Seiten senden `noindex`.
-- **Uploads** werden von `sharp` neu kodiert (außer dem gespeicherten Original bei erlaubten Downloads werden keine rohen Nutzerdateien ausgeliefert) und sind größenbegrenzt.
+- **Uploads** werden von `sharp` neu kodiert (außer dem gespeicherten Original bei erlaubten Downloads werden keine rohen Nutzerdateien ausgeliefert) und sind größenbegrenzt. Berechtigung, `Origin` und angegebene `Content-Length` werden geprüft, *bevor* der Body gelesen wird; höchstens 10 Dateien pro Anfrage. Gast-Uploads laufen pro Gast nacheinander, damit parallele Anfragen das Limit nicht überschreiten (pro Prozess).
+- **Wasserzeichen** – nur auf dem großen Anzeigebild; die kleinen Raster-Vorschaubilder (max. 480 px) bleiben bewusst sauber.
+- **Anmeldung** – E-Mail/Passwort-Konten müssen ihre Adresse bestätigen; Magic Links sind in Produktion ohne SMTP abgeschaltet, damit Anmeldelinks nie im Log landen.
 - **Cron-Endpunkt** erfordert das Bearer-Token `CRON_SECRET`.
 
 ### Checkliste für Betreiber

@@ -183,6 +183,9 @@ export async function addGuestPhoto(actor: SessionUser, albumSlug: string, input
   if (!album.guestUploads.enabled) throw forbidden("guestUploadsDisabled");
   if (album.blockedUserIds.includes(actor.id)) throw forbidden("blockedFromAlbum");
 
+  // Serialise uploads per guest+album so parallel requests cannot all pass the limit check
+  // (per process — see docs/operator/security.md for multi-instance notes).
+  return withGuestLock(`${album.id}:${actor.id}`, async () => {
   const db = await getDb();
   const mine = await db.count(COLLECTIONS.photos.name, {
     where: [
@@ -195,6 +198,20 @@ export async function addGuestPhoto(actor: SessionUser, albumSlug: string, input
   const photo = await ingest(album, actor, { ...input, source: "guest-upload" }, "pending", await countPhotos(album.id));
   await notifyOwner(album, { kind: "guest-upload", summary: `${actor.name}: ${photo.originalFilename}` });
   return photo;
+  });
+}
+
+const guestLocks = new Map<string, Promise<unknown>>();
+/** Minimal per-key async mutex (in-process). */
+async function withGuestLock<T>(key: string, fn: () => Promise<T>): Promise<T> {
+  const prev = guestLocks.get(key) ?? Promise.resolve();
+  const run = prev.catch(() => undefined).then(fn);
+  guestLocks.set(key, run);
+  try {
+    return await run;
+  } finally {
+    if (guestLocks.get(key) === run) guestLocks.delete(key);
+  }
 }
 
 /** status "approved" sorted by position; owners may request "pending" for the moderation queue. */

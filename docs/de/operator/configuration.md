@@ -13,6 +13,7 @@ Boolesche Werte akzeptieren `true`, `false`, `1`, `0`. Ein leerer Wert bedeutet 
 | `WAYFARE_SECRET` | *(Pflicht)* | **Secret.** Mindestens 32 Zeichen. Signiert Medien-URLs und Cookies, verschlüsselt gespeicherte Google-Tokens |
 | `WAYFARE_ADMIN_EMAILS` | *(leer)* | Kommagetrennte E-Mail-Adressen, die bei Registrierung und Anmeldung **Admin** werden. Gibt es noch keinen Admin, wird der erste registrierte Nutzer Admin |
 | `WAYFARE_DEMO_MODE` | `false` | Demo-Modus für Demodaten/Screenshots. Niemals in Produktion aktivieren |
+| `WAYFARE_TRUSTED_PROXIES` | `1` | Anzahl der Reverse Proxies vor Wayfare, die an `X-Forwarded-For` anhängen. Bestimmt die Client-IP fürs Rate-Limiting (der N-te Eintrag von rechts). `0` = Header ignorieren (direkt erreichbar, kein Proxy) |
 | `DATA_DIR` | `./data` | Ablageort von SQLite (`wayfare.db`) und lokalen Blobs (`blobs/`). Im Docker-Image `/data` |
 
 ## Speicher
@@ -58,8 +59,8 @@ Ein Social-Anbieter ist aktiv, wenn ID und Secret gesetzt sind. Siehe [Authentif
 | `AUTH_DISCORD_ID` | *(leer)* | Client-ID der Discord-Anwendung |
 | `AUTH_DISCORD_SECRET` | *(leer)* | **Secret.** Discord-Client-Secret |
 | `AUTH_PASSKEY` | `true` | Passkeys (WebAuthn) erlauben. Braucht HTTPS und eine stabile Domain |
-| `AUTH_MAGIC_LINK` | `true` | Anmeldung per E-Mail-Link. Für echten Versand ist `SMTP_URL` nötig |
-| `AUTH_EMAIL_PASSWORD` | `false` | Klassische Anmeldung mit E-Mail + Passwort |
+| `AUTH_MAGIC_LINK` | `true` | Anmeldung per E-Mail-Link. In Produktion nur aktiv, wenn `SMTP_URL` gesetzt ist (sonst landeten Links im Log) |
+| `AUTH_EMAIL_PASSWORD` | `false` | Klassische Anmeldung mit E-Mail + Passwort. Neue Konten müssen ihre E-Mail-Adresse bestätigen (braucht `SMTP_URL`) |
 
 ## Foto-Quellen (Google)
 

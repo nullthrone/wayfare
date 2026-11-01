@@ -78,7 +78,7 @@ export function SettingsForm({ album, themes, locale }: { album: SettingsFormAlb
             autoComplete="off"
             label={album.hasPassword ? t("access.newPassword") : t("access.password")}
             hint={album.hasPassword ? t("access.passwordKeep") : t("access.passwordHint")}
-            minLength={4}
+            minLength={6}
             maxLength={128}
           />
           <Alert kind="warning">{t("access.passwordWarning")}</Alert>

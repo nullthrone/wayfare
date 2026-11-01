@@ -18,7 +18,7 @@
   "watermarkTextTooLong": "Der Wasserzeichen-Text ist zu lang (max. 80 Zeichen).",
   "guestLimitInvalid": "Das Upload-Limit pro Gast muss zwischen 0 und 500 liegen.",
   "passwordRequired": "Bitte lege ein Passwort für dieses Album fest.",
-  "passwordTooShort": "Das Passwort muss mindestens 4 Zeichen lang sein.",
+  "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein.",
   "passwordTooLong": "Das Passwort ist zu lang.",
   "passwordNotAllowed": "Ein Passwort kann nur gesetzt werden, wenn der Zugriffsmodus „Passwort“ aktiv ist.",
   "photoNotFound": "Dieses Foto existiert nicht.",
@@ -63,5 +63,9 @@
   "emailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
   "userNotFound": "Dieser Benutzer existiert nicht.",
   "lastAdmin": "Der letzte Administrator kann nicht herabgestuft oder gelöscht werden.",
-  "cannotBanSelf": "Du kannst dich nicht selbst sperren."
+  "cannotBanSelf": "Du kannst dich nicht selbst sperren.",
+  "lengthRequired": "Der Upload konnte nicht verarbeitet werden (Größenangabe fehlt). Bitte versuch es noch einmal.",
+  "tooManyFiles": "Zu viele Dateien auf einmal. Lade bitte höchstens 10 Dateien gleichzeitig hoch.",
+  "crossOrigin": "Diese Anfrage wurde aus Sicherheitsgründen blockiert.",
+  "themeNotAvailable": "Dieses Theme ist nicht verfügbar."
 }

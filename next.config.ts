@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   cacheComponents: false,
   serverExternalPackages: ["better-sqlite3", "sharp", "firebase-admin"],
   experimental: {
-    serverActions: { bodySizeLimit: "30mb" },
+    serverActions: { bodySizeLimit: "2mb" },
   },
   poweredByHeader: false,
   async headers() {

@@ -20,9 +20,18 @@ export function getLoginMethods(): LoginMethods {
   if (cfg.AUTH_DISCORD_ID && cfg.AUTH_DISCORD_SECRET) social.push("discord");
   return {
     social,
-    // Works with the console mailer in development (the link is printed to stdout).
-    magicLink: cfg.AUTH_MAGIC_LINK,
+    magicLink: magicLinkEnabled(cfg),
     passkey: cfg.AUTH_PASSKEY,
     emailPassword: cfg.AUTH_EMAIL_PASSWORD || cfg.WAYFARE_DEMO_MODE,
   };
+}
+
+/**
+ * Magic links are only offered when they can be delivered privately: with SMTP, in demo mode,
+ * or outside production (dev: the console mailer prints the link). In production without SMTP
+ * the console mailer would write working sign-in links into the logs.
+ */
+export function magicLinkEnabled(cfg: ReturnType<typeof config>): boolean {
+  if (!cfg.AUTH_MAGIC_LINK) return false;
+  return !!cfg.SMTP_URL || cfg.WAYFARE_DEMO_MODE || process.env.NODE_ENV !== "production";
 }

@@ -16,7 +16,12 @@ import { getPath, setPath } from "./filter";
  */
 
 const NAME_RE = /^[A-Za-z0-9_]+$/;
-const SEGMENT_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
+/**
+ * Allowed characters per path segment. Hyphens/leading digits occur in data keys (e.g. reaction
+ * keys like "white-heart"), so every segment is emitted double-quoted in the JSON path. The
+ * charset deliberately excludes quotes and dots, because paths are inlined into SQL text.
+ */
+const SEGMENT_RE = /^[A-Za-z0-9_-]+$/;
 
 type Bindable = string | number | bigint | null;
 
@@ -25,7 +30,7 @@ function jsonPath(field: string): string {
   for (const p of parts) {
     if (!SEGMENT_RE.test(p)) throw new Error(`Invalid field path: ${JSON.stringify(field)}`);
   }
-  return `$.${parts.join(".")}`;
+  return `$.${parts.map((p) => `"${p}"`).join(".")}`;
 }
 
 /** SQL expression yielding the (scalar) value of `field`. */

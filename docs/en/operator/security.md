@@ -3,15 +3,17 @@
 ## Security model
 
 - **Album access** — albums live at `/a/{slug}`. The slug is 10 random characters from a 31-letter alphabet (~50 bits) and cannot be enumerated. Drafts are invisible to everybody except owner and admins.
-- **Password albums** — passwords are stored as **scrypt** hashes. A correct password sets a signed cookie bound to the album's `passwordVersion`; changing the password invalidates all unlock cookies. Attempts are rate-limited.
-- **Revocation** — rotating the slug invalidates every QR code and link at once. Expiry dates are enforced on every request.
+- **Password albums** — passwords are stored as **scrypt** hashes. A correct password sets a signed cookie bound to the album's `passwordVersion`; changing the password invalidates all unlock cookies. Minimum length is 6 characters. Attempts are limited per visitor (10 per 10 minutes, client IP via `WAYFARE_TRUSTED_PROXIES`); beyond 100 attempts per album, every attempt is slowed down instead of blocking legitimate guests. Limits are kept in memory per process.
+- **Revocation** — rotating the slug invalidates every QR code and link at once — including media URLs that were already handed out (signatures are bound to slug and `passwordVersion`). Expiry dates are enforced on every request.
 - **Media delivery** — photos are only served through `/api/media/{photoId}/{variant}?exp&sig` (HMAC-signed, short TTL) after re-checking album access. Originals are delivered only if the owner allows downloads. Responses use `Cache-Control: private`.
 - **Download protection** — see the [user guide](../guide/download-protection) for what it does and where it ends: screenshots cannot be prevented.
 - **Authorisation** is enforced in the service layer, not only in pages. Roles: viewer < owner < admin.
 - **Secrets** — Google tokens for photo sources are encrypted with AES-256-GCM using a key derived from `WAYFARE_SECRET`. Rotating the secret invalidates sessions and stored connections.
 - **Cloud rules** — `firestore.rules` and `storage.rules` deny all client access; the server uses the Admin SDK.
 - **Headers** — `X-Content-Type-Options`, `X-Frame-Options: DENY`, strict `Referrer-Policy`, restrictive `Permissions-Policy`; album pages send `noindex`.
-- **Uploads** are re-encoded by `sharp` (no raw user files are served except the stored original when downloads are allowed) and size-limited.
+- **Uploads** are re-encoded by `sharp` (no raw user files are served except the stored original when downloads are allowed) and size-limited. Permissions, `Origin` and the declared `Content-Length` are checked *before* the body is read; at most 10 files per request. Guest uploads are serialised per guest so parallel requests cannot exceed the per-guest limit (per process).
+- **Watermark** — applied to the large display image only; the small grid thumbnails (max. 480 px) stay clean on purpose.
+- **Sign-in** — e-mail/password accounts must confirm their address; magic links are disabled in production without SMTP, so sign-in links never end up in logs.
 - **Cron endpoint** requires the `CRON_SECRET` bearer token.
 
 ### Operator checklist

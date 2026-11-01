@@ -24,6 +24,8 @@ const schema = z.object({
   WAYFARE_SECRET: z.string().min(32, "WAYFARE_SECRET must be at least 32 characters"),
   WAYFARE_ADMIN_EMAILS: z.string().default(""),
   WAYFARE_DEMO_MODE: bool(false),
+  /** Number of reverse proxies in front of Wayfare that append to X-Forwarded-For (for rate limiting). */
+  WAYFARE_TRUSTED_PROXIES: z.coerce.number().int().min(0).max(10).default(1),
 
   DATA_DIR: z.string().default("./data"),
   STORAGE_DRIVER: z.enum(["local", "s3", "firebase"]).optional(),

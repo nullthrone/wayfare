@@ -18,10 +18,17 @@ import { ctx, jpeg, makeUser, resetCtx } from "./fakes";
 
 beforeEach(() => resetCtx());
 
-async function form(files: { name: string; data: Buffer; type: string }[], field = "files") {
+/** Builds a multipart request like a browser does (incl. Content-Length). */
+async function form(files: { name: string; data: Buffer; type: string }[], field = "files", headers: Record<string, string> = {}) {
   const fd = new FormData();
   for (const f of files) fd.append(field, new File([new Uint8Array(f.data)], f.name, { type: f.type }));
-  return new Request("http://localhost:3000/api/upload/x", { method: "POST", body: fd });
+  const encoded = new Response(fd);
+  const body = new Uint8Array(await encoded.arrayBuffer());
+  return new Request("http://localhost:3000/api/upload/x", {
+    method: "POST",
+    body,
+    headers: { "content-type": encoded.headers.get("content-type")!, "content-length": String(body.byteLength), ...headers },
+  });
 }
 
 describe("POST /api/upload/[albumId]", () => {
@@ -57,6 +64,19 @@ describe("POST /api/upload/[albumId]", () => {
     expect((await call(await form([]))).status).toBe(400);
     expect((await call(await form([{ name: "a.jpg", data: good, type: "image/jpeg" }]), "missing")).status).toBe(404);
   });
+
+  it("rejects before reading the body: missing length, oversized declared length, cross-origin", async () => {
+    const owner = await makeUser("owner");
+    const album = await createAlbum(owner, { title: "A", themeId: "t" });
+    const good = await jpeg();
+    ctx.currentUser = owner;
+    const call = (req: Request) => uploadPost(req, { params: Promise.resolve({ albumId: album.id }) });
+    const noLength = new Request("http://localhost:3000/api/upload/x", { method: "POST", body: "x", headers: { "content-type": "multipart/form-data; boundary=x" } });
+    expect((await call(noLength)).status).toBe(411);
+    expect((await call(await form([{ name: "a.jpg", data: good, type: "image/jpeg" }], "files", { "content-length": String(10 * 1024 * 1024 * 1024) }))).status).toBe(413);
+    expect((await call(await form([{ name: "a.jpg", data: good, type: "image/jpeg" }], "files", { origin: "https://evil.example" }))).status).toBe(403);
+    expect(await listPhotos(album.id)).toHaveLength(0);
+  });
 });
 
 describe("POST /api/upload/guest/[slug]", () => {
@@ -80,10 +100,12 @@ describe("POST /api/upload/guest/[slug]", () => {
     expect(await listPhotos(album.id)).toHaveLength(0);
     expect(await listPhotos(album.id, "pending")).toHaveLength(1);
 
-    // password-protected album without unlock → forbidden per file
+    // password-protected album without unlock → rejected before the body is read
     await updateAlbumSettings(owner, album.id, { accessMode: "password", password: "secret1" });
     ctx.currentUser = await makeUser("viewer");
-    expect(await (await call()).json()).toMatchObject({ photos: [], errors: [{ error: "albumLocked" }] });
+    const locked = await call();
+    expect(locked.status).toBe(403);
+    expect(await locked.json()).toEqual({ error: "albumLocked" });
   });
 });
 

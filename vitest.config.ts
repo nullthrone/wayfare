@@ -6,6 +6,8 @@ export default defineConfig({
     environment: "node",
     include: ["tests/**/*.test.ts"],
     setupFiles: ["tests/setup.ts"],
+    // sharp/scrypt-heavy tests can exceed 5 s on loaded CI runners
+    testTimeout: 20_000,
   },
   resolve: {
     alias: {

@@ -261,8 +261,16 @@ export async function redeemInvite(actor: SessionUser, token: string): Promise<b
   if (!doc) return false;
   const invite = normalizeInvite(doc);
   if (invite.usedBy || Date.parse(invite.expiresAt) <= Date.now()) return false;
+  // An invite addressed to an e-mail can only be redeemed by that account.
+  if (invite.email && invite.email.trim().toLowerCase() !== actor.email.trim().toLowerCase()) return false;
   if (hasRole(actor, "owner")) return true;
-  await db.update(COLLECTIONS.invites.name, invite.id, { usedBy: actor.id, usedAt: nowIso() });
+  // Claim conditionally (usedBy still null) so concurrent redemptions cannot both succeed.
+  const claimed = await db.updateMany(
+    COLLECTIONS.invites.name,
+    { where: [{ field: "id", op: "eq", value: invite.id }, { field: "usedBy", op: "eq", value: null }] },
+    { usedBy: actor.id, usedAt: nowIso() },
+  );
+  if (claimed !== 1) return false;
   await setRole(actor.id, "owner");
   return true;
 }

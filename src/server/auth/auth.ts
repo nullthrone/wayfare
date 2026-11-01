@@ -8,6 +8,7 @@ import { config } from "../config";
 import { getDb, getMailer } from "../container";
 import { COLLECTIONS } from "../ports/document-store";
 import { documentStoreAdapter } from "./adapter";
+import { magicLinkEnabled } from "./methods";
 
 /**
  * Better Auth instance (lazy). `config()` reads the environment at call time, so the instance is built
@@ -42,7 +43,7 @@ function buildAuth() {
   const isAdminEmail = (email: string | undefined | null) => !!email && cfg.adminEmails.includes(email.trim().toLowerCase());
 
   const plugins = [
-    ...(cfg.AUTH_MAGIC_LINK
+    ...(magicLinkEnabled(cfg)
       ? [
           magicLink({
             expiresIn: 60 * 10,
@@ -86,8 +87,34 @@ function buildAuth() {
     trustedOrigins,
     emailAndPassword: {
       enabled: cfg.AUTH_EMAIL_PASSWORD || cfg.WAYFARE_DEMO_MODE,
-      autoSignIn: true,
+      // Unverified addresses must never sign in: admin promotion relies on verified e-mails.
+      requireEmailVerification: true,
+      autoSignIn: false,
       minPasswordLength: 8,
+    },
+    emailVerification: {
+      sendOnSignUp: true,
+      autoSignInAfterVerification: true,
+      async sendVerificationEmail({ user, url }) {
+        const mailer = await getMailer();
+        await mailer.send({
+          to: user.email,
+          subject: "Bestätige deine E-Mail-Adresse / Confirm your e-mail address",
+          text: [
+            "Hallo!",
+            "",
+            "Bitte bestätige deine E-Mail-Adresse für Wayfare:",
+            url,
+            "",
+            "————————————",
+            "",
+            "Hello!",
+            "",
+            "Please confirm your e-mail address for Wayfare:",
+            url,
+          ].join("\n"),
+        });
+      },
     },
     socialProviders: social,
     account: {
@@ -113,12 +140,19 @@ function buildAuth() {
           async before(user) {
             let role: "admin" | "viewer" = "viewer";
             if (isAdminEmail(user.email)) {
-              role = "admin";
-            } else {
-              // Bootstrap: the very first user of a fresh instance becomes admin.
+              // Only a *verified* address proves mailbox ownership (social providers / magic link
+              // verify it; e-mail+password users are promoted on their first verified sign-in).
+              if (user.emailVerified) role = "admin";
+            } else if (cfg.adminEmails.length === 0) {
+              // Bootstrap for instances without WAYFARE_ADMIN_EMAILS: only the very first account
+              // of an empty instance becomes admin. Counting *users* (not admins) means demoting
+              // the last admin can never re-arm this.
               const db = await getDb();
-              const admins = await db.count(COLLECTIONS.authUser.name, { where: [{ field: "role", op: "eq", value: "admin" }] });
-              if (admins === 0) role = "admin";
+              const users = await db.count(COLLECTIONS.authUser.name);
+              if (users === 0) {
+                role = "admin";
+                console.warn(`[auth] Bootstrap: first account (${user.email}) became admin. Set WAYFARE_ADMIN_EMAILS to control this.`);
+              }
             }
             return { data: { ...user, role, banned: false } };
           },
@@ -128,12 +162,12 @@ function buildAuth() {
         create: {
           async before(session) {
             const db = await getDb();
-            const user = await db.get<{ id: string; email: string; role?: string; banned?: boolean }>(COLLECTIONS.authUser.name, session.userId);
+            const user = await db.get<{ id: string; email: string; emailVerified?: boolean; role?: string; banned?: boolean }>(COLLECTIONS.authUser.name, session.userId);
             if (!user) return;
             if (user.banned) {
               throw new APIError("FORBIDDEN", { message: "This account has been blocked.", code: "USER_BANNED" });
             }
-            if (isAdminEmail(user.email) && user.role !== "admin") {
+            if (isAdminEmail(user.email) && user.emailVerified === true && user.role !== "admin") {
               await db.update(COLLECTIONS.authUser.name, user.id, { role: "admin" });
             }
           },
@@ -145,6 +179,7 @@ function buildAuth() {
 }
 
 export type Auth = ReturnType<typeof buildAuth>;
+
 
 const g = globalThis as unknown as { __wayfareAuth?: Auth };
 

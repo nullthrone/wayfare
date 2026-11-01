@@ -99,6 +99,21 @@ export function runDocumentStoreContract(name: string, factory: () => DocumentSt
       expect(await db.get(c, "missing")).toBeNull();
     });
 
+    it("supports keys with hyphens and leading digits (e.g. reaction keys) in update, increment, filter and sort", async () => {
+      await db.create(c, { id: "1", name: "one", n: 1 });
+      await db.increment(c, "1", "reactionCounts.white-heart", 2);
+      await db.increment(c, "1", "reactionCounts.1st", 1);
+      await db.update(c, "1", { "labels.de-de": "Kerze" });
+      const doc = await db.get<Item & { reactionCounts: Record<string, number>; labels: Record<string, string> }>(c, "1");
+      expect(doc?.reactionCounts).toEqual({ "white-heart": 2, "1st": 1 });
+      expect(doc?.labels["de-de"]).toBe("Kerze");
+      expect(await db.count(c, { where: [{ field: "reactionCounts.white-heart", op: "gte", value: 2 }] })).toBe(1);
+      await db.create(c, { id: "2", name: "two", n: 2 });
+      await db.increment(c, "2", "reactionCounts.white-heart", 5);
+      const sorted = await db.find<Item>(c, { sort: [{ field: "reactionCounts.white-heart", direction: "desc" }] });
+      expect(sorted.map((d) => d.id)).toEqual(["2", "1"]);
+    });
+
     it("increment is atomic under concurrency", async () => {
       await db.create(c, { id: "1", name: "one", n: 0 });
       await Promise.all(Array.from({ length: 50 }, () => db.increment(c, "1", "n", 1)));
@@ -310,7 +325,7 @@ describe("sqlite specifics", () => {
     const raw = new Database(file, { readonly: true });
     const idx = raw.prepare("SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='c_albums'").all() as { name: string }[];
     expect(idx.map((i) => i.name)).toEqual(expect.arrayContaining(["i_c_albums_ownerId", "i_c_albums_slug"]));
-    const plan = raw.prepare("EXPLAIN QUERY PLAN SELECT data FROM \"c_albums\" WHERE json_extract(data,'$.ownerId') = ?").all("u1") as { detail: string }[];
+    const plan = raw.prepare("EXPLAIN QUERY PLAN SELECT data FROM \"c_albums\" WHERE json_extract(data,'$.\"ownerId\"') = ?").all("u1") as { detail: string }[];
     expect(plan.map((p) => p.detail).join(" ")).toContain("USING INDEX");
     raw.close();
   });

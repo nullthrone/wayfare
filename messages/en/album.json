@@ -78,7 +78,7 @@
       },
       "password": "Password",
       "newPassword": "New password",
-      "passwordHint": "At least 4 characters. Share the password separately.",
+      "passwordHint": "At least 6 characters. Share the password separately.",
       "passwordKeep": "Leave empty to keep the current password.",
       "passwordWarning": "Changing the password signs out everyone who has already opened the album.",
       "expires": "Expiry date",

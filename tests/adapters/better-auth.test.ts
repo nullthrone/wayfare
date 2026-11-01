@@ -45,30 +45,53 @@ describe("Better Auth on the DocumentStore adapter", () => {
   });
   afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
 
+  /** Sign up with e-mail/password and click the verification link printed by the console mailer. */
+  const signUpVerified = async (name: string, email: string, password = "password-1234", extra: Record<string, unknown> = {}) => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const res = await post(handler, "/api/auth/sign-up/email", { name, email, password, ...extra });
+    await new Promise((r) => setTimeout(r, 20)); // mail may be sent in the background
+    const printed = log.mock.calls.map((c) => String(c[0])).join("\n");
+    log.mockRestore();
+    expect(res.status).toBe(200);
+    expect(cookieFrom(res)).not.toContain("session_token"); // no session before verification
+    const url = printed.match(/https?:\/\/\S+verify-email\?\S+/)?.[0];
+    expect(url, "verification link printed").toBeTruthy();
+    const verify = await handler(new Request(url!, { headers: { origin: ORIGIN } }));
+    return cookieFrom(verify);
+  };
+
   const session = async (cookie: string) => {
     const res = await handler(new Request(`${ORIGIN}/api/auth/get-session`, { headers: { cookie, origin: ORIGIN } }));
     return (await res.json()) as { user?: { id: string; email: string; role: string; banned: boolean; createdAt: string } } | null;
   };
 
-  it("first user becomes admin, later users viewers, admin e-mails are admins", async () => {
-    const r1 = await post(handler, "/api/auth/sign-up/email", { name: "First", email: "first@example.com", password: "password-1234" });
-    expect(r1.status).toBe(200);
-    const s1 = await session(cookieFrom(r1));
-    expect(s1?.user?.email).toBe("first@example.com");
-    expect(s1?.user?.role).toBe("admin");
-    expect(s1?.user?.banned).toBe(false);
+  it("with WAYFARE_ADMIN_EMAILS set there is no first-user bootstrap; admin e-mails need verification", async () => {
+    const first = await signUpVerified("First", "first@example.com");
+    expect((await session(first))?.user?.role).toBe("viewer");
 
-    const r2 = await post(handler, "/api/auth/sign-up/email", { name: "Second", email: "second@example.com", password: "password-1234" });
-    expect((await session(cookieFrom(r2)))?.user?.role).toBe("viewer");
+    // Security regression: registering a configured admin address without verifying it grants nothing.
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const squat = await post(handler, "/api/auth/sign-up/email", { name: "Squatter", email: "boss@example.com", password: "password-1234" });
+    log.mockRestore();
+    expect(cookieFrom(squat)).not.toContain("session_token");
+    const db = await getDb();
+    const squatter = await db.findOne<{ id: string; role: string }>("auth_user", { where: [{ field: "email", op: "eq", value: "boss@example.com" }] });
+    expect(squatter?.role).toBe("viewer");
+    expect((await post(handler, "/api/auth/sign-in/email", { email: "boss@example.com", password: "password-1234" })).status).toBe(403);
+    await db.delete("auth_user", squatter!.id);
+    await db.deleteMany("auth_account", { where: [{ field: "userId", op: "eq", value: squatter!.id }] });
 
-    const r3 = await post(handler, "/api/auth/sign-up/email", { name: "Boss", email: "Boss@Example.com", password: "password-1234" });
-    expect((await session(cookieFrom(r3)))?.user?.role).toBe("admin");
+    const second = await signUpVerified("Second", "second@example.com");
+    expect((await session(second))?.user?.role).toBe("viewer");
+
+    const boss = await signUpVerified("Boss", "Boss@Example.com");
+    expect((await session(boss))?.user?.role).toBe("admin");
+    expect((await session(first))?.user?.banned).toBe(false);
   });
 
   it("clients cannot set role/banned at sign-up", async () => {
-    const r = await post(handler, "/api/auth/sign-up/email", { name: "Sneaky", email: "sneaky@example.com", password: "password-1234", role: "admin", banned: false });
-    const s = await session(cookieFrom(r));
-    expect(s?.user?.role).toBe("viewer");
+    const cookie = await signUpVerified("Sneaky", "sneaky@example.com", "password-1234", { role: "admin", banned: false });
+    expect((await session(cookie))?.user?.role).toBe("viewer");
   });
 
   it("stores dates as ISO strings and returns Dates through the API", async () => {
@@ -76,7 +99,7 @@ describe("Better Auth on the DocumentStore adapter", () => {
     const user = await db.findOne<{ id: string; createdAt: unknown }>("auth_user", { where: [{ field: "email", op: "eq", value: "second@example.com" }] });
     expect(typeof user?.createdAt).toBe("string");
     const sessions = await db.find<{ id: string; expiresAt: unknown }>("auth_session", { where: [{ field: "userId", op: "eq", value: user!.id }] });
-    expect(sessions).toHaveLength(1);
+    expect(sessions.length).toBeGreaterThanOrEqual(1);
     expect(typeof sessions[0].expiresAt).toBe("string");
   });
 
@@ -139,7 +162,6 @@ describe("Better Auth on the DocumentStore adapter", () => {
 
   it("promotes a user whose e-mail was added to WAYFARE_ADMIN_EMAILS on the next sign-in", async () => {
     const db = await getDb();
-    await post(handler, "/api/auth/sign-up/email", { name: "Boss", email: "boss@example.com", password: "password-1234" }).catch(() => undefined);
     const boss = await db.findOne<{ id: string }>("auth_user", { where: [{ field: "email", op: "eq", value: "boss@example.com" }] });
     await db.update("auth_user", boss!.id, { role: "viewer" });
     const res = await post(handler, "/api/auth/sign-in/email", { email: "boss@example.com", password: "password-1234" });

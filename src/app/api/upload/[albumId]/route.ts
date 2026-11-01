@@ -1,9 +1,10 @@
 import "server-only";
 import { NextResponse } from "next/server";
 import { invalid } from "@/server/errors";
+import { getAlbumForOwner } from "@/server/services/albums";
 import { addPhoto } from "@/server/services/photos";
 import { requireRole } from "@/server/services/session";
-import { errorResponse, ingestFiles, readFiles } from "../_shared";
+import { errorResponse, ingestFiles, preflight, readFiles } from "../_shared";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +15,8 @@ export async function POST(req: Request, { params }: { params: Promise<{ albumId
   try {
     const { albumId } = await params;
     const actor = await requireRole("owner");
+    await getAlbumForOwner(actor, albumId); // authorise before buffering the body
+    await preflight(req);
     const files = await readFiles(req).catch(() => {
       throw invalid("invalidUpload");
     });

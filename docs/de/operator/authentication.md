@@ -12,8 +12,8 @@ mit `<provider>` = `google`, `apple`, `facebook` oder `discord`. Beispiel: `http
 
 ## Admin-Bootstrap
 
-- Jeder, dessen E-Mail in `WAYFARE_ADMIN_EMAILS` steht (kommagetrennt), wird bei der Registrierung **Admin** und bei der nächsten Anmeldung befördert.
-- Gibt es noch gar keinen Admin, wird der **erste Nutzer**, der sich registriert, Admin.
+- Jeder, dessen E-Mail in `WAYFARE_ADMIN_EMAILS` steht (kommagetrennt), wird **Admin** — aber nur mit **verifizierter** Adresse (Social Login, Magic Link oder bestätigtes E-Mail/Passwort-Konto). Wer eine solche Adresse nur registriert, ohne sie zu bestätigen, bekommt keine Rechte.
+- Nur wenn `WAYFARE_ADMIN_EMAILS` **leer** ist, wird das allererste Konto einer leeren Instanz Admin (mit Warnung im Log). Empfehlung: `WAYFARE_ADMIN_EMAILS` immer setzen, bevor die Instanz erreichbar ist.
 - Danach befördern Admins weitere Nutzer unter **/admin → Nutzer** und wählen den Onboarding-Modus.
 
 ## E-Mail und Passwort

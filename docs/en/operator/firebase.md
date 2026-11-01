@@ -73,7 +73,7 @@ The re-deploy is required: a running backend keeps using the secret version it w
 
 ### Custom domain
 
-Connect the domain in the Firebase console (*App Hosting → Settings → Domains*), then run the script with `--reconfigure` and enter the URL (it sets `WAYFARE_BASE_URL`). Update the redirect URIs of your OAuth clients: `<URL>/api/auth/callback/<provider>` for sign-in and `<URL>/api/sources/callback` for Google photo import.
+Connect the domain in the Firebase console (*App Hosting → Settings → Domains*), then run the script with `--reconfigure` and enter the URL (it sets `WAYFARE_BASE_URL`). Update the redirect URIs of your OAuth clients: `<URL>/api/auth/callback/<provider>` for sign-in (and Google photo import when reusing `AUTH_GOOGLE_ID`), or `<URL>/api/sources/callback` when using a dedicated `GOOGLE_SOURCES_CLIENT_ID`.
 
 ### Tear down
 

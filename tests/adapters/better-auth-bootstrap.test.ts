@@ -18,7 +18,6 @@ vi.mock("next/headers", () => ({
 }));
 
 const ORIGIN = "http://localhost:3000";
-const cookieFrom = (res: Response) => res.headers.getSetCookie().map((c) => c.split(";")[0]).join("; ");
 
 describe("admin bootstrap without WAYFARE_ADMIN_EMAILS", () => {
   let handler: (r: Request) => Promise<Response>;

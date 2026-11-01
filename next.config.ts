@@ -14,6 +14,20 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: { bodySizeLimit: "30mb" },
   },
+  poweredByHeader: false,
+  async headers() {
+    const security = [
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+    ];
+    return [
+      { source: "/:path*", headers: security },
+      // Album pages must never be indexed by search engines.
+      { source: "/a/:slug*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noimageindex" }] },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

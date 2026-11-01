@@ -1,0 +1,72 @@
+name: Claude docs sync
+
+# When application code changes, let Claude compare the diff with the user/operator docs
+# (docs/de + docs/en), update them (and the screenshot scenario) and open a PR.
+# Requires the repository secret ANTHROPIC_API_KEY; without it the job is a no-op.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "messages/**"
+
+concurrency:
+  group: claude-docs
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  sync:
+    # Do not react to our own docs PR merges / bot commits.
+    if: ${{ !startsWith(github.event.head_commit.message, 'docs:') && github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    steps:
+      - name: Check for ANTHROPIC_API_KEY
+        id: gate
+        run: |
+          if [ "$HAS_KEY" = "true" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ANTHROPIC_API_KEY not configured - skipping docs sync."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.enabled == 'true'
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        if: steps.gate.outputs.enabled == 'true'
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git status:*),Bash(git checkout:*),Bash(git switch:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*),Bash(gh pr create:*),Bash(node scripts/check-docs.mjs:*),Bash(npm --prefix docs run build)"
+          prompt: |
+            You maintain the Wayfare documentation. The commit ${{ github.sha }} was just pushed to main
+            (previous commit: ${{ github.event.before }}).
+
+            1. Run `git diff ${{ github.event.before }} ${{ github.sha }} -- src messages` and understand which
+               USER-FACING or OPERATOR-FACING behaviour changed (UI, features, album settings, themes, exports,
+               photo sources, login providers, env keys in src/server/config.ts).
+            2. Compare with the docs: docs/en/** and docs/de/** (user guide `guide/`, operator guide `operator/`,
+               and `operator/configuration.md`). Read CLAUDE.md and ARCHITECTURE.md first.
+            3. Update the affected pages in BOTH languages (German uses informal "du"). Every env key in
+               src/server/config.ts must appear in docs/{en,de}/operator/configuration.md.
+               Run `node scripts/check-docs.mjs` and fix what it reports.
+            4. If the UI changed, update the screenshot scenario in e2e/screenshots.spec.ts.
+            5. If nothing user-facing changed (refactors, tests, internal code), do NOT open a PR; just stop.
+            6. Otherwise create a branch `docs/sync-${{ github.sha }}`, commit with the message
+               `docs: sync with ${{ github.sha }}`, push it and open a pull request titled
+               `docs: sync with ${{ github.sha }}` against main. Describe what changed and why.
+            Keep edits minimal and accurate; never invent features that are not in the code.

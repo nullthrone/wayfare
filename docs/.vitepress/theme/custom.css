@@ -1,0 +1,12 @@
+:root {
+  --vp-c-brand-1: #d9644a;
+  --vp-c-brand-2: #e07a5f;
+  --vp-c-brand-3: #e07a5f;
+  --vp-c-brand-soft: rgba(224, 122, 95, 0.14);
+}
+
+.vp-doc img.shot {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,13 @@
+rules_version = '2';
+
+// Wayfare accesses Firestore exclusively through the Firebase Admin SDK on the server
+// (App Hosting service account), which bypasses these rules. Authentication, authorisation
+// and album access control are enforced in Wayfare's service layer.
+// Therefore: deny ALL direct client access (web/mobile SDKs).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

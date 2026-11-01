@@ -1,0 +1,62 @@
+# Firebase App Hosting configuration for Wayfare.
+# Docs: https://firebase.google.com/docs/app-hosting/configure
+# Secrets live in Cloud Secret Manager: `firebase apphosting:secrets:set <NAME>`
+# (see docs/en/operator/firebase.md).
+
+runConfig:
+  cpu: 1
+  memoryMiB: 1024        # image processing (sharp) needs headroom; raise to 2048 for large uploads
+  minInstances: 0        # set to 1 to avoid cold starts (costs money)
+  maxInstances: 3
+  concurrency: 40
+
+env:
+  - variable: WAYFARE_RUNTIME
+    value: firebase
+  # Set to your public URL (custom domain or the *.hosted.app URL).
+  - variable: WAYFARE_BASE_URL
+    value: https://wayfare--YOUR_PROJECT_ID.europe-west4.hosted.app
+  - variable: WAYFARE_ADMIN_EMAILS
+    value: you@example.com
+  - variable: FIREBASE_PROJECT_ID
+    value: YOUR_PROJECT_ID
+  - variable: FIREBASE_STORAGE_BUCKET
+    value: YOUR_PROJECT_ID.firebasestorage.app
+  - variable: MAIL_FROM
+    value: "Wayfare <no-reply@example.com>"
+
+  # --- Secrets (create with `firebase apphosting:secrets:set NAME`) ---
+  # Available at build AND runtime so that `next build` can import the config safely.
+  - variable: WAYFARE_SECRET
+    secret: WAYFARE_SECRET
+  - variable: CRON_SECRET
+    secret: CRON_SECRET
+    availability:
+      - RUNTIME
+  # Uncomment what you use:
+  # - variable: SMTP_URL
+  #   secret: SMTP_URL
+  # - variable: AUTH_GOOGLE_ID
+  #   secret: AUTH_GOOGLE_ID
+  # - variable: AUTH_GOOGLE_SECRET
+  #   secret: AUTH_GOOGLE_SECRET
+  # - variable: AUTH_APPLE_ID
+  #   secret: AUTH_APPLE_ID
+  # - variable: AUTH_APPLE_SECRET
+  #   secret: AUTH_APPLE_SECRET
+  # - variable: AUTH_FACEBOOK_ID
+  #   secret: AUTH_FACEBOOK_ID
+  # - variable: AUTH_FACEBOOK_SECRET
+  #   secret: AUTH_FACEBOOK_SECRET
+  # - variable: AUTH_DISCORD_ID
+  #   secret: AUTH_DISCORD_ID
+  # - variable: AUTH_DISCORD_SECRET
+  #   secret: AUTH_DISCORD_SECRET
+  # - variable: GOOGLE_SOURCES_CLIENT_ID
+  #   secret: GOOGLE_SOURCES_CLIENT_ID
+  # - variable: GOOGLE_SOURCES_CLIENT_SECRET
+  #   secret: GOOGLE_SOURCES_CLIENT_SECRET
+  # - variable: GOOGLE_API_KEY
+  #   secret: GOOGLE_API_KEY
+  # - variable: GOOGLE_APP_ID
+  #   value: "123456789012"   # Cloud project number (not secret)

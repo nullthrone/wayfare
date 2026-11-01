@@ -1,0 +1,86 @@
+name: Docs (screenshots + GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "docs/**"
+      - "messages/**"
+      - "e2e/**"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      WAYFARE_SECRET: docs-demo-secret-0123456789-0123456789-abcdef
+      WAYFARE_BASE_URL: http://localhost:3000
+      WAYFARE_DEMO_MODE: "true"
+      WAYFARE_ADMIN_EMAILS: admin@example.com
+      DATA_DIR: ./data-demo
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: Seed demo data
+        run: npm run seed
+
+      - name: Start app in demo mode
+        run: |
+          nohup npm start > app.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fsS http://localhost:3000/api/health && exit 0
+            sleep 2
+          done
+          echo "App did not become healthy"; cat app.log; exit 1
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Take screenshots (de + en)
+        run: npm run screenshots
+
+      - name: Upload app log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-log
+          path: app.log
+
+      - name: Build VitePress site
+        run: |
+          npm --prefix docs ci
+          npm --prefix docs run build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

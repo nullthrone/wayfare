@@ -14,7 +14,9 @@
     "docs:build": "npm --prefix docs run build",
     "docs:preview": "npm --prefix docs run preview",
     "docs:check": "node scripts/check-docs.mjs",
-    "test:integration": "WAYFARE_TEST_REAL_ADAPTERS=1 vitest run tests/services"
+    "test:integration": "WAYFARE_TEST_REAL_ADAPTERS=1 vitest run tests/services",
+    "seed": "tsx --require ./scripts/stub-server-only.cjs scripts/seed.ts",
+    "screenshots": "node e2e/screenshots.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1161.0",

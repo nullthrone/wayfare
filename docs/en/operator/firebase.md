@@ -35,7 +35,7 @@ The script is idempotent: it checks what already exists and only creates what is
 | 5 APIs | Enables the required APIs (Firebase, App Hosting, Cloud Build, Cloud Run, Artifact Registry, Secret Manager, Firestore, Storage, Scheduler, …) and adds Firebase to the project |
 | 6 Regions | App Hosting region (`europe-west4`, `us-central1` or `asia-east1`) and Firestore location |
 | 7 Data | Firestore database (native mode) and a **private** bucket `gs://<project>-wayfare-media` (uniform access, public access prevention) |
-| 8 Configuration | Builds the `WAYFARE_ENV` secret: admin e-mail(s), sender address, optional SMTP, optional login providers, optional Google photo import, optional custom domain. Generates `WAYFARE_SECRET` and `CRON_SECRET` once and **keeps them stable** on re-runs |
+| 8 Configuration | Builds the `WAYFARE_ENV` secret: admin e-mail(s), sender address, optional SMTP (guided: host, port, user, password – the URL is assembled and encoded for you; a stored malformed `SMTP_URL` is detected), optional login providers, optional Google photo import, optional custom domain. Generates `WAYFARE_SECRET` and `CRON_SECRET` once and **keeps them stable** on re-runs |
 | 9 Backend | Creates the App Hosting backend `wayfare`, lets it read the secret, grants its service account `roles/datastore.user` (project) and `roles/storage.objectAdmin` (bucket) |
 | 10 Deploy | `firebase deploy` of Firestore rules/indexes and the backend from the clone |
 | 11 Measure | Waits for `/api/health`, then measures how many proxies sit in front of the app (see below) and corrects `WAYFARE_TRUSTED_PROXIES` if needed |

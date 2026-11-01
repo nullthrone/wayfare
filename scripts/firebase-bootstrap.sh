@@ -147,7 +147,13 @@ v_email_list() { # one or more, comma separated
 }
 v_project_id() { [[ $1 =~ ^[a-z][a-z0-9-]{4,28}[a-z0-9]$ ]]; }
 v_https_url_opt() { [ -z "$1" ] || [[ $1 =~ ^https://[A-Za-z0-9.-]+(:[0-9]+)?(/[^[:space:]]*)?$ ]]; }
-v_smtp_opt() { [ -z "$1" ] || [[ $1 =~ ^smtps?://[^[:space:]]+$ ]]; }
+# Same rule as isValidSmtpUrl() in src/server/config.ts (the app refuses to start with a malformed SMTP_URL).
+v_smtp_opt() {
+  [ -z "$1" ] && return 0
+  node -e 'try{const u=new URL(process.argv[1]);process.exit((u.protocol==="smtp:"||u.protocol==="smtps:")&&/^(localhost|[0-9.]+|([A-Za-z0-9-]+\.)+[A-Za-z]{2,})$/.test(u.hostname)?0:1)}catch{process.exit(1)}' "$1"
+}
+v_hostname() { [[ $1 =~ ^([A-Za-z0-9-]+\.)+[A-Za-z]{2,}$ ]]; }
+v_port() { [[ $1 =~ ^[0-9]{2,5}$ ]] && [ "$1" -le 65535 ]; }
 v_nonempty() { [ -n "$1" ]; }
 v_mail_from() { [[ $1 == *@* ]]; }
 v_timezone() { [[ $1 =~ ^[A-Za-z_]+(/[A-Za-z0-9_+-]+){0,2}$ ]]; }
@@ -580,6 +586,36 @@ step_data() {
   state_save
 }
 
+smtp_part() { # smtp_part host|port|user  -> component of the current SMTP_URL (user decoded)
+  node -e 'try{const u=new URL(process.argv[1]);const p={host:u.hostname,port:u.port||(u.protocol==="smtps:"?"465":"587"),user:decodeURIComponent(u.username)};console.log(p[process.argv[2]]||"")}catch{}' "$(env_get SMTP_URL)" "$1"
+}
+
+# Asks for host / port / user in the clear and only the password hidden, then builds a correctly
+# URL-encoded SMTP_URL (a hand-typed URL with hidden input is too easy to get wrong).
+smtp_setup() {
+  local host port user pass url cur_host="" cur_port="" cur_user=""
+  if env_has SMTP_URL && v_smtp_opt "$(env_get SMTP_URL)"; then
+    cur_host=$(smtp_part host); cur_port=$(smtp_part port); cur_user=$(smtp_part user)
+  fi
+  note "Gmail: host smtp.gmail.com, port 465, user = your Gmail address, password = an app password"
+  note "      (https://myaccount.google.com/apppasswords, needs 2-step verification). MAIL_FROM should be that address."
+  while true; do
+    ask host "SMTP host (e.g. smtp.gmail.com):" "$cur_host" v_hostname
+    ask port "SMTP port (465 = TLS, 587 = STARTTLS):" "${cur_port:-465}" v_port
+    ask user "SMTP user name (often the full e-mail address):" "${cur_user:-$(env_get WAYFARE_ADMIN_EMAILS | cut -d, -f1)}" v_nonempty
+    ask_secret pass "SMTP password:" v_nonempty
+    [ "$host" = smtp.gmail.com ] && pass=${pass// /} # app passwords are displayed in groups of four
+    url=$(node -e 'const [h,p,u,pw]=process.argv.slice(1);console.log(`${p==="465"?"smtps":"smtp"}://${encodeURIComponent(u)}:${encodeURIComponent(pw)}@${h}:${p}`)' "$host" "$port" "$user" "$pass")
+    SECRET_MASKS+=("$url" "$(node -e 'console.log(encodeURIComponent(process.argv[1]))' "$pass")")
+    if v_smtp_opt "$url"; then
+      env_set SMTP_URL "$url"
+      ok "SMTP_URL set (host $host, port $port, user $user)."
+      return 0
+    fi
+    warn "Could not build a valid SMTP URL from these values, please try again."
+  done
+}
+
 default_base_url() { printf 'https://%s--%s.%s.hosted.app' "$BACKEND" "$PROJECT_ID" "$REGION"; }
 
 step_config() {
@@ -634,10 +670,11 @@ step_config() {
     BASE_URL=$(env_get WAYFARE_BASE_URL)
 
     note "SMTP is needed for magic-link sign-in and notifications in production (without it mails are only logged)."
-    note "Format: smtps://user:password@smtp.example.com:465"
-    local smtp
-    ask_secret smtp "SMTP_URL (empty = keep ${E[SMTP_URL]+current/}none):" v_smtp_opt
-    [ -n "$smtp" ] && env_set SMTP_URL "$smtp"
+    if env_has SMTP_URL && v_smtp_opt "$(env_get SMTP_URL)"; then
+      if ask_yn "SMTP is configured (host: $(smtp_part host)). Change it?" n; then smtp_setup; fi
+    elif ask_yn "Configure SMTP now?" n; then
+      smtp_setup
+    fi
 
     if ask_yn "Enable Google sign-in?" n; then
       info "Create an OAuth client (type: Web application):"
@@ -688,6 +725,17 @@ step_config() {
     [ "$BASE_URL" = "$pattern_url" ] || CUSTOM_DOMAIN=1
   fi
   [ "$WANT_PHOTO_IMPORT" = yes ] && env_set GOOGLE_APP_ID "$PROJECT_NUMBER"
+
+  # A malformed SMTP_URL stops the app at startup - never store one.
+  if env_has SMTP_URL && ! v_smtp_opt "$(env_get SMTP_URL)"; then
+    warn "The stored SMTP_URL is malformed (expected smtps://user:password@smtp.example.com:465)."
+    if [ "$ASSUME_YES" != 1 ] && ask_yn "Re-enter the SMTP settings now? (no = remove SMTP_URL)" y; then
+      smtp_setup
+    else
+      env_set SMTP_URL ""
+      warn "SMTP_URL removed - mails are only logged until you run this script with --reconfigure."
+    fi
+  fi
 
   echo
   info "Configuration to be stored (secrets masked):"

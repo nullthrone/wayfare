@@ -34,7 +34,9 @@ case "$a" in
     resume || exit 1
     printf '%s\n' 'WAYFARE_SECRET=SEKRET-do-not-leak-0123456789-0123456789-abcdef' 'CRON_SECRET=CRON-do-not-leak-0123456789' \
       'FIREBASE_STORAGE_BUCKET=wayfare-demo-wayfare-media' 'WAYFARE_TRUSTED_PROXIES=2' 'WAYFARE_ADMIN_EMAILS=dev@example.com' \
-      'MAIL_FROM="Wayfare <dev@example.com>"' 'WAYFARE_BASE_URL=https://wayfare--wayfare-demo.europe-west4.hosted.app' ;;
+      'MAIL_FROM="Wayfare <dev@example.com>"' 'WAYFARE_BASE_URL=https://wayfare--wayfare-demo.europe-west4.hosted.app'
+    [ "${STUB_BAD_SMTP:-0}" = 1 ] && echo 'SMTP_URL=smtps://dev%40example.com:BADPASS-do-not-leak@://example.com'
+    true ;;
   "iam service-accounts describe"*) resume && echo "x@y" || exit 1 ;;
   "iam service-accounts list"*) echo "firebase-app-hosting-compute@wayfare-demo.iam.gserviceaccount.com" ;;
   "iam workload-identity-pools describe"*|"iam workload-identity-pools providers describe"*) resume && echo name || exit 1 ;;
@@ -135,6 +137,16 @@ check "existing secrets never printed" 'SEKRET-do-not-leak|CRON-do-not-leak' "$O
 check "backends:create not called" 'backends:create' "$OUT" -v
 m=$(mutating_calls)
 [ -z "$m" ] && echo "  ok:   no mutating call executed" || { echo "  FAIL: mutating calls executed:"; echo "$m"; fail=1; }
+
+# ------------------------------------------------------------------ B2: stored SMTP_URL is malformed (would stop the app)
+mkdir -p "$work/home-badsmtp/.config/wayfare"
+cp "$work/home-resume/.config/wayfare/bootstrap.env" "$work/home-badsmtp/.config/wayfare/"
+scenario badsmtp 1 STUB_BAD_SMTP=1 -- --dry-run --yes
+[ "$RC" = 0 ] || { echo "  FAIL: exit code $RC"; tail -20 "$OUT"; fail=1; }
+check "malformed SMTP_URL detected" 'stored SMTP_URL is malformed' "$OUT"
+check "malformed SMTP_URL removed (--yes)" 'SMTP_URL removed' "$OUT"
+check "new secret version written" 'secrets versions add WAYFARE_ENV' "$OUT"
+check "SMTP password never printed" 'BADPASS-do-not-leak' "$OUT" -v
 
 # ------------------------------------------------------------------ C: billing link fails (real run against stubs, no cloud, no network)
 mkdir -p "$work/home-billing-fail/.config/wayfare" "$work/bf-clone"

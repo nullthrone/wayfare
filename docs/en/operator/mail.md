@@ -11,6 +11,10 @@ MAIL_FROM="Wayfare <no-reply@photos.example.com>"
 
 Use `smtps://` (implicit TLS, port 465) or `smtp://…:587` with STARTTLS. URL-encode special characters in the password (`@` → `%40`). Any provider works (Mailgun, Postmark, Brevo, your own server, Gmail with an app password …).
 
+**Gmail:** `SMTP_URL=smtps://you%40gmail.com:APP-PASSWORD@smtp.gmail.com:465` – the host is `smtp.gmail.com`, not `gmail.com`. The [app password](https://myaccount.google.com/apppasswords) requires 2-step verification and is entered without spaces; `MAIL_FROM` should be the same address.
+
+A malformed `SMTP_URL` (e.g. without a host) stops Wayfare at startup with an error message instead of surfacing only when a mail is sent.
+
 Make the sender domain deliverable: configure **SPF**, **DKIM** and **DMARC** for the domain in `MAIL_FROM`, or magic links will end up in spam.
 
 ## Without SMTP

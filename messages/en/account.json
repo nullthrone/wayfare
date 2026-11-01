@@ -1,0 +1,82 @@
+{
+  "title": "Your account",
+  "roles": {
+    "viewer": "Viewer",
+    "owner": "Owner",
+    "admin": "Admin"
+  },
+  "profile": {
+    "title": "Profile",
+    "name": "Name",
+    "email": "E-mail address",
+    "emailHint": "The e-mail address can’t be changed.",
+    "save": "Save",
+    "saved": "Profile saved.",
+    "failed": "The profile couldn’t be saved."
+  },
+  "passkeys": {
+    "title": "Passkeys",
+    "description": "Sign in without a password using a fingerprint, face recognition or a security key.",
+    "loading": "Loading …",
+    "empty": "No passkey set up yet.",
+    "unnamed": "Passkey",
+    "added": "Added on {date}",
+    "remove": "Remove passkey “{name}”",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "e.g. MacBook",
+    "add": "Add passkey",
+    "failed": "The passkey couldn’t be processed."
+  },
+  "sources": {
+    "title": "Photo sources",
+    "description": "Connected services for importing photos."
+  },
+  "language": {
+    "title": "Language",
+    "description": "Applies to the interface on this device."
+  },
+  "session": {
+    "title": "Session",
+    "signOut": "Sign out"
+  },
+  "delete": {
+    "sectionTitle": "Delete account",
+    "description": "Your account and all associated data are deleted permanently.",
+    "button": "Delete account",
+    "title": "Delete account permanently?",
+    "warning": "Your comments, reactions and sign-ins are removed. This cannot be undone.",
+    "warningOwner": "All your albums with photos, comments and reactions are deleted and distributed QR codes lead nowhere. This cannot be undone.",
+    "typeEmail": "To confirm, type your e-mail address: {email}",
+    "confirm": "Delete account permanently",
+    "mismatch": "The e-mail address you entered doesn’t match."
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Sign in to comment on albums, react or create your own.",
+    "continueWith": "Continue with {provider}",
+    "passkey": "Sign in with a passkey",
+    "or": "or",
+    "email": "E-mail address",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "Send sign-in link",
+    "magicHint": "We’ll e-mail you a link – no password needed.",
+    "sent": {
+      "title": "Check your inbox",
+      "description": "We sent a sign-in link to {email}. It’s only valid for a short time.",
+      "back": "Use a different e-mail address"
+    },
+    "password": {
+      "signinTitle": "With e-mail and password",
+      "signupTitle": "Create an account",
+      "name": "Name",
+      "password": "Password",
+      "signin": "Sign in",
+      "signup": "Create account",
+      "toSignup": "No account yet? Sign up",
+      "toSignin": "Already have an account? Sign in"
+    },
+    "noMethods": "No sign-in method is configured on this instance. Please contact the operator.",
+    "failed": "Signing in didn’t work. Please try again.",
+    "legalNote": "We only store what your account needs – no tracking."
+  }
+}

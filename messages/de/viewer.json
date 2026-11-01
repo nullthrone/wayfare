@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "description": "Ein geteiltes Fotoalbum auf Wayfare."
+  },
+  "notFound": {
+    "title": "Album nicht gefunden"
+  },
+  "footer": "Geteilt mit Wayfare",
+  "draftBanner": "Entwurf – nur du siehst dieses Album. Veröffentliche es, damit der Link für andere funktioniert.",
+  "bar": {
+    "edit": "Bearbeiten",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden"
+  },
+  "expired": {
+    "description": "Dieses Album ist abgelaufen und nicht mehr verfügbar.",
+    "hint": "Frag die Person, die dir den Link geschickt hat, ob sie es erneut freigeben kann."
+  },
+  "gate": {
+    "description": "Dieses Album ist mit einem Passwort geschützt.",
+    "password": "Passwort",
+    "unlock": "Album öffnen",
+    "wrong": "Das Passwort stimmt nicht. Bitte versuche es noch einmal."
+  },
+  "empty": {
+    "title": "Hier kommen bald Fotos",
+    "description": "Dieses Album ist noch leer."
+  },
+  "gallery": {
+    "count": "{count, plural, one {# Foto} other {# Fotos}}",
+    "photoAlt": "Foto {n}",
+    "open": "Foto öffnen: {caption}",
+    "openN": "Foto {n} von {total} öffnen"
+  },
+  "lightbox": {
+    "label": "Fotoansicht",
+    "close": "Schließen",
+    "prev": "Vorheriges Foto",
+    "next": "Nächstes Foto",
+    "download": "Herunterladen",
+    "counter": "{n} / {total}",
+    "photoAlt": "Foto {n} von {total}"
+  },
+  "reactions": {
+    "label": "Reaktionen",
+    "loginLink": "Melde dich an,",
+    "loginSuffix": "um zu reagieren.",
+    "failed": "Das hat nicht geklappt. Versuche es bitte noch einmal."
+  },
+  "comments": {
+    "title": "Kommentare",
+    "loading": "Lade Kommentare …",
+    "loadFailed": "Kommentare konnten nicht geladen werden.",
+    "empty": "Noch keine Kommentare.",
+    "awaiting": "Wartet auf Freigabe",
+    "write": "Kommentar schreiben",
+    "placeholder": "Schreib etwas Nettes …",
+    "send": "Kommentar senden",
+    "preHint": "Kommentare erscheinen nach Freigabe durch die Albumbesitzerin oder den Albumbesitzer.",
+    "pendingNotice": "Danke! Dein Kommentar erscheint nach der Freigabe.",
+    "delete": "Löschen",
+    "report": "Melden",
+    "reported": "Gemeldet",
+    "reportReason": "Was stört dich an diesem Kommentar?",
+    "reportSend": "Meldung senden",
+    "loginLink": "Melde dich an,",
+    "loginSuffix": "um zu kommentieren."
+  },
+  "upload": {
+    "button": "Eigene Fotos beitragen",
+    "loginButton": "Anmelden und Fotos beitragen",
+    "choose": "Fotos auswählen",
+    "hint": "Deine Fotos erscheinen nach Freigabe durch den Albumbesitzer.",
+    "clear": "Liste leeren",
+    "afterApproval": "{count, plural, one {# Foto wurde hochgeladen} other {# Fotos wurden hochgeladen}} und wird nach Freigabe sichtbar."
+  }
+}

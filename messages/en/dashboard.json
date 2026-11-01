@@ -1,0 +1,69 @@
+{
+  "albums": {
+    "title": "Your albums",
+    "subtitle": "All the albums you’ve created.",
+    "new": "New album",
+    "empty": {
+      "title": "No albums yet",
+      "description": "Create your first album, upload photos and share it with a QR code."
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "photoCount": "{count, plural, =0 {No photos} one {# photo} other {# photos}}",
+    "viewCount": "{count, plural, one {# view} other {# views}}",
+    "expired": "Expired",
+    "expiresOn": "Until {date}"
+  },
+  "newAlbum": {
+    "title": "New album",
+    "subtitle": "Give the album a name and pick a theme. You’ll add photos in the next step.",
+    "back": "Back to albums",
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. Grandma’s 80th birthday",
+      "message": "Greeting",
+      "messageHint": "Shown on the album cover – like the back of a postcard.",
+      "messagePlaceholder": "So glad you could be there!",
+      "theme": "Theme"
+    },
+    "create": "Create album"
+  },
+  "onboarding": {
+    "title": "Share your own albums",
+    "subtitle": "With the owner role you create albums and share them with a QR code.",
+    "goToDashboard": "Go to dashboard",
+    "open": {
+      "description": "On this instance anyone who is signed in can create albums. One click and you’re in.",
+      "cta": "Become an owner"
+    },
+    "approval": {
+      "description": "On this instance an admin decides who may create albums. Tell them briefly what you’d like to use Wayfare for.",
+      "message": "Message to the admin",
+      "messageHint": "Optional – for example what you need albums for.",
+      "cta": "Send request",
+      "sent": "Request sent. You’ll get access as soon as an admin approves it.",
+      "pendingTitle": "Your request is being reviewed",
+      "pendingDescription": "An admin is looking at your request. Check back later.",
+      "approvedTitle": "Request approved",
+      "approvedDescription": "You can now create albums.",
+      "deniedTitle": "Request declined",
+      "deniedDescription": "Your last request was declined. You can submit a new one."
+    },
+    "invite": {
+      "title": "Invitation only",
+      "description": "On this instance only people with an invite link can create albums. Ask the admin for a link."
+    },
+    "inviteRedeem": {
+      "title": "You’ve been invited",
+      "description": "This invitation gives you the “owner” role so you can create your own albums.",
+      "alreadyOwner": "You can already create albums – you don’t need this invitation.",
+      "redeem": "Redeem invitation",
+      "successTitle": "Welcome aboard!",
+      "successDescription": "You can now create albums.",
+      "goToDashboard": "Go to dashboard",
+      "invalid": "This invitation is invalid, expired or has already been used."
+    }
+  }
+}

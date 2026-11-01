@@ -1,0 +1,77 @@
+{
+  "panel": {
+    "title": "Teilen & Drucken",
+    "intro": "Verteile dein Album per Link, QR-Code oder als gedruckte Postkarte.",
+    "qrAlt": "QR-Code zum Album „{title}“",
+    "linkLabel": "Link zum Album",
+    "copyLink": "Link kopieren",
+    "copied": "Kopiert!",
+    "copyFailed": "Kopieren nicht möglich – markiere den Link und kopiere ihn von Hand.",
+    "shareNative": "Teilen …",
+    "shareWhatsApp": "Per WhatsApp senden",
+    "shareText": "Schau dir mein Fotoalbum „{title}“ an:",
+    "shareTitle": "Fotoalbum: {title}",
+    "passwordNote": "Dein Album ist passwortgeschützt. Der QR-Code und der Link enthalten das Passwort nicht – gib es separat weiter, zum Beispiel mündlich oder in einer eigenen Nachricht.",
+    "passwordHintLabel": "Hinweis „Passwort wird separat mitgeteilt“ mit aufdrucken",
+    "exportsTitle": "Zum Ausdrucken & Posten",
+    "exportsIntro": "Alle Dateien enthalten den QR-Code deines Albums in den Farben und Schriften deines Themes.",
+    "download": "Herunterladen",
+    "preview": "Vorschau"
+  },
+  "cards": {
+    "postcard": {
+      "title": "Postkarte A6",
+      "description": "Vorderseite mit Titelbild, Rückseite mit Grußtext und QR-Code. Mit 3 mm Beschnitt und Schnittmarken.",
+      "tip": "Im Copyshop oder in der Drogerie auf 300 g/m²-Karton drucken lassen (beidseitig, 100 % Größe, nicht „an Seite anpassen“) und entlang der Schnittmarken zuschneiden."
+    },
+    "stickersRound": {
+      "title": "Sticker, rund",
+      "description": "12 runde Aufkleber (60 mm) mit QR-Code und Titel auf einem A4-Bogen.",
+      "tip": "Auf selbstklebendes Etikettenpapier (A4) drucken und ausschneiden. Perfekt für Geschenke, Einladungen und Fotobücher."
+    },
+    "stickersSquare": {
+      "title": "Sticker, eckig",
+      "description": "12 quadratische Aufkleber (60 mm) mit QR-Code und Titel auf einem A4-Bogen.",
+      "tip": "Auf selbstklebendes Etikettenpapier (A4) drucken und an den Linien ausschneiden."
+    },
+    "posterA4": {
+      "title": "Poster A4",
+      "description": "„Scan mich!“ mit großem QR-Code, Titel und Link – ideal für Tischaufsteller, Türen und Pinnwände.",
+      "tip": "Auf normalem Papier (80–120 g/m²) in jedem Drucker oder Copyshop ausdrucken."
+    },
+    "posterA3": {
+      "title": "Poster A3",
+      "description": "Wie das A4-Poster, aber groß genug, um auch aus mehreren Metern gescannt zu werden.",
+      "tip": "Im Copyshop auf A3 drucken lassen. Für draußen laminieren oder auf Folie drucken lassen."
+    },
+    "socialStory": {
+      "title": "Story (1080×1920)",
+      "description": "Hochformat-Bild für Instagram-, WhatsApp- und Facebook-Stories.",
+      "tip": "Wichtige Inhalte liegen in der Bildmitte, damit die Oberfläche der App nichts verdeckt."
+    },
+    "socialSquare": {
+      "title": "Quadrat (1080×1080)",
+      "description": "Quadratisches Bild für Beiträge, Chats und Newsletter.",
+      "tip": "Funktioniert in fast jedem Messenger und Netzwerk."
+    },
+    "qrPng": {
+      "title": "QR-Code (PNG)",
+      "description": "Nur der QR-Code als Bild mit weißem Rand, 1000+ Pixel.",
+      "tip": "Zum Einfügen in eigene Dokumente, Einladungen oder Präsentationen."
+    },
+    "qrSvg": {
+      "title": "QR-Code (SVG)",
+      "description": "Nur der QR-Code als Vektorgrafik – verlustfrei skalierbar.",
+      "tip": "Ideal für Druckereien und Grafikprogramme. Lass mindestens 4 Module weißen Rand um den Code."
+    }
+  },
+  "formats": { "pdf": "PDF", "png": "PNG", "svg": "SVG" },
+  "exports": {
+    "scanMe": "Scan mich!",
+    "scanHint": "Kamera aufs Handy halten – fertig.",
+    "scanMeSmall": "Scan mich!",
+    "passwordHint": "Passwortgeschützt – das Passwort bekommst du separat.",
+    "defaultTitle": "Fotoalbum",
+    "openAlbum": "Album öffnen"
+  }
+}

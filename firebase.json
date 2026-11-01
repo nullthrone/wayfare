@@ -1,0 +1,32 @@
+{
+  "apphosting": [
+    {
+      "backendId": "wayfare",
+      "rootDir": "/",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        ".next/**",
+        "docs/**",
+        "e2e/**",
+        "tests/**",
+        "data/**",
+        "data-demo/**",
+        "test-results/**",
+        "playwright-report/**",
+        "coverage/**",
+        "scripts/test/**",
+        "*.md"
+      ]
+    }
+  ],
+  "firestore": {
+    "database": "(default)",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

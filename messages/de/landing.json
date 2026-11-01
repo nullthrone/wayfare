@@ -1,0 +1,65 @@
+{
+  "hero": {
+    "eyebrow": "Fotoalben zum Weitergeben",
+    "title": "Fotoalben, die sich anfühlen wie eine Postkarte.",
+    "subtitle": "Lade deine schönsten Fotos hoch, wähle ein Thema zum Anlass und teile das Album per QR-Code – online oder gedruckt auf einer echten Karte. Deine Gäste öffnen es mit einem Scan.",
+    "cta": "Jetzt loslegen",
+    "secondary": "So funktioniert’s"
+  },
+  "how": {
+    "title": "In drei Schritten zum geteilten Album",
+    "upload": {
+      "title": "Fotos sammeln",
+      "description": "Lade Bilder hoch oder importiere sie aus Google Fotos und Google Drive. Gäste können – nach deiner Freigabe – eigene Fotos beisteuern."
+    },
+    "theme": {
+      "title": "Thema wählen",
+      "description": "Geburtstag, Hochzeit, Erinnerung … Jeder Anlass bekommt Farben, Schrift, Rahmen und passende Reaktionen."
+    },
+    "share": {
+      "title": "QR-Code teilen",
+      "description": "Zeige den Code am Bildschirm, drucke ihn auf eine Karte oder verschicke den Link. Optional mit Passwort und Ablaufdatum."
+    }
+  },
+  "themes": {
+    "title": "Für jeden Anlass das passende Gewand",
+    "subtitle": "Dreizehn Themes sind direkt dabei. Mit dem Theme-Builder gestaltest du eigene."
+  },
+  "features": {
+    "title": "Gemacht für Menschen, nicht für Statistiken",
+    "reactions": {
+      "title": "Reaktionen mit Gefühl",
+      "description": "Jedes Theme bringt eigene Emoji-Reaktionen mit – vom Konfetti bis zur Kerze."
+    },
+    "comments": {
+      "title": "Kommentare mit Moderation",
+      "description": "Schalte Kommentare direkt frei, prüfe sie vorab oder deaktiviere sie ganz."
+    },
+    "guests": {
+      "title": "Fotos von Gästen",
+      "description": "Gäste laden Bilder hoch, du entscheidest, was im Album erscheint."
+    },
+    "control": {
+      "title": "Du behältst die Kontrolle",
+      "description": "Passwortschutz, Ablaufdatum, Download-Schutz mit Wasserzeichen und ein Link, den du jederzeit widerrufen kannst."
+    },
+    "privacy": {
+      "title": "Datenschutz ohne Kompromisse",
+      "description": "Kein Tracking, keine Werbung, keine Fremd-Server im Browser. Ansichten werden anonym gezählt."
+    },
+    "openSource": {
+      "title": "Offen und selbst betreibbar",
+      "description": "Wayfare ist Open Source. Betreibe deine eigene Instanz – auf deinem Server oder bei Firebase."
+    }
+  },
+  "final": {
+    "title": "Bereit für dein erstes Album?",
+    "subtitle": "Anmelden, Fotos hochladen, QR-Code teilen – fertig.",
+    "github": "Auf GitHub ansehen"
+  },
+  "viewerCard": {
+    "title": "Du möchtest selbst Alben teilen?",
+    "description": "Du bist angemeldet und kannst Alben ansehen. Um eigene Alben zu erstellen, brauchst du die Rolle „Owner“.",
+    "cta": "Alben-Rolle anfragen"
+  }
+}

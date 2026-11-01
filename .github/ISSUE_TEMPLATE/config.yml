@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://nullthrone.github.io/wayfare/
+    about: Read the user and operator guides before opening an issue.
+  - name: Questions & ideas (Discussions)
+    url: https://github.com/nullthrone/wayfare/discussions
+    about: Ask questions or share ideas in GitHub Discussions.
+  - name: Report a security vulnerability
+    url: https://github.com/nullthrone/wayfare/security/advisories/new
+    about: Please report vulnerabilities privately - never in a public issue.

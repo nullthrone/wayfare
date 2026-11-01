@@ -1,0 +1,119 @@
+/*
+ * Photo frames. ThemedSurface sets data-wf-frame="{frame}" on its root; any element with the
+ * class .wf-photo-frame inside it picks up the frame style.
+ *
+ * Markup:
+ *   <figure class="wf-photo-frame">
+ *     <img src="…" alt="…" style="aspect-ratio: 4 / 3" />   (or any element with .wf-photo-media)
+ *     <figcaption class="wf-photo-caption">Caption</figcaption>   (optional, shown on polaroid)
+ *   </figure>
+ *
+ * Put the aspect-ratio / size on the media element, not on the frame: frames add padding
+ * (polaroid caption space, stamp border, gold border …) around it.
+ *
+ * Import once in the root layout:  import "@/themes/frames.css";
+ */
+
+.wf-photo-frame {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--wf-surface, #fff);
+}
+
+.wf-photo-frame > img,
+.wf-photo-frame > picture,
+.wf-photo-frame > .wf-photo-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wf-photo-caption {
+  display: none;
+  margin: 0;
+}
+
+/* rounded ------------------------------------------------------------------ */
+[data-wf-frame="rounded"] .wf-photo-frame {
+  border-radius: 1.25rem;
+  box-shadow: 0 0.25rem 0.75rem -0.25rem rgb(0 0 0 / 0.25);
+}
+
+/* soft shadow -------------------------------------------------------------- */
+[data-wf-frame="soft-shadow"] .wf-photo-frame {
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0.125rem 0.25rem rgb(0 0 0 / 0.12),
+    0 0.75rem 1.75rem -0.5rem rgb(0 0 0 / 0.35);
+}
+
+/* polaroid: white border, extra space below for the caption ----------------- */
+[data-wf-frame="polaroid"] .wf-photo-frame {
+  background: #fff;
+  padding: 0.6rem 0.6rem 2.9rem;
+  border-radius: 0.15rem;
+  box-shadow:
+    0 0.0625rem 0.1875rem rgb(0 0 0 / 0.2),
+    0 0.5rem 1.25rem -0.4rem rgb(0 0 0 / 0.35);
+}
+[data-wf-frame="polaroid"] .wf-photo-caption {
+  position: absolute;
+  inset: auto 0.6rem 0 0.6rem;
+  height: 2.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #2a2a2a;
+  font-family: var(--wf-font-heading, inherit);
+  font-size: 1.05rem;
+}
+
+/* deckle / postcard: paper border with a hand-torn edge --------------------- */
+[data-wf-frame="deckle"] .wf-photo-frame {
+  background: #fffdf5;
+  padding: 0.55rem;
+  clip-path: polygon(0.00% 0.83%, 3.85% 0.60%, 7.69% 0.30%, 11.54% 0.17%, 15.38% 0.49%, 19.23% 0.34%, 23.08% 0.70%, 26.92% 0.59%, 30.77% 0.73%, 34.62% 0.43%, 38.46% 0.47%, 42.31% 0.36%, 46.15% 0.75%, 50.00% 0.51%, 53.85% 0.31%, 57.69% 0.75%, 61.54% 0.52%, 65.38% 0.70%, 69.23% 0.65%, 73.08% 0.30%, 76.92% 0.56%, 80.77% 0.05%, 84.62% 0.55%, 88.46% 0.13%, 92.31% 1.07%, 96.15% 1.06%, 100.00% 0.31%, 99.79% 3.85%, 99.75% 7.69%, 99.47% 11.54%, 98.93% 15.38%, 99.54% 19.23%, 99.65% 23.08%, 99.86% 26.92%, 99.69% 30.77%, 99.63% 34.62%, 99.07% 38.46%, 99.79% 42.31%, 99.78% 46.15%, 99.50% 50.00%, 99.36% 53.85%, 99.43% 57.69%, 99.16% 61.54%, 98.96% 65.38%, 99.41% 69.23%, 98.93% 73.08%, 99.04% 76.92%, 99.54% 80.77%, 99.40% 84.62%, 98.97% 88.46%, 99.70% 92.31%, 99.18% 96.15%, 99.63% 100.00%, 96.15% 99.45%, 92.31% 98.97%, 88.46% 99.65%, 84.62% 99.06%, 80.77% 99.71%, 76.92% 99.45%, 73.08% 99.94%, 69.23% 99.78%, 65.38% 99.09%, 61.54% 99.38%, 57.69% 99.84%, 53.85% 99.49%, 50.00% 99.61%, 46.15% 99.03%, 42.31% 99.55%, 38.46% 99.60%, 34.62% 98.91%, 30.77% 99.04%, 26.92% 99.42%, 23.08% 99.57%, 19.23% 99.08%, 15.38% 98.95%, 11.54% 99.14%, 7.69% 98.92%, 3.85% 99.22%, 0.00% 99.45%, 1.03% 96.15%, 0.86% 92.31%, 0.13% 88.46%, 0.68% 84.62%, 0.37% 80.77%, 0.16% 76.92%, 0.03% 73.08%, 1.05% 69.23%, 0.58% 65.38%, 0.35% 61.54%, 0.37% 57.69%, 0.17% 53.85%, 0.86% 50.00%, 0.14% 46.15%, 0.18% 42.31%, 0.90% 38.46%, 0.54% 34.62%, 0.99% 30.77%, 0.50% 26.92%, 0.03% 23.08%, 0.25% 19.23%, 0.05% 15.38%, 0.37% 11.54%, 0.79% 7.69%, 1.05% 3.85%);
+}
+
+/* stamp: perforated edge (union of an inner rectangle and four notched strips) */
+[data-wf-frame="stamp"] .wf-photo-frame {
+  --wf-perf: 0.3rem;
+  --wf-pitch: 0.95rem;
+  background: #fffdf5;
+  padding: 0.8rem;
+  -webkit-mask:
+    linear-gradient(#000, #000) center / calc(100% - 2 * var(--wf-perf)) calc(100% - 2 * var(--wf-perf)) no-repeat,
+    radial-gradient(circle var(--wf-perf) at 50% 0, #0000 97%, #000) top left / var(--wf-pitch) var(--wf-perf) round no-repeat,
+    radial-gradient(circle var(--wf-perf) at 50% 100%, #0000 97%, #000) bottom left / var(--wf-pitch) var(--wf-perf) round no-repeat,
+    radial-gradient(circle var(--wf-perf) at 0 50%, #0000 97%, #000) top left / var(--wf-perf) var(--wf-pitch) no-repeat round,
+    radial-gradient(circle var(--wf-perf) at 100% 50%, #0000 97%, #000) top right / var(--wf-perf) var(--wf-pitch) no-repeat round;
+  mask:
+    linear-gradient(#000, #000) center / calc(100% - 2 * var(--wf-perf)) calc(100% - 2 * var(--wf-perf)) no-repeat,
+    radial-gradient(circle var(--wf-perf) at 50% 0, #0000 97%, #000) top left / var(--wf-pitch) var(--wf-perf) round no-repeat,
+    radial-gradient(circle var(--wf-perf) at 50% 100%, #0000 97%, #000) bottom left / var(--wf-pitch) var(--wf-perf) round no-repeat,
+    radial-gradient(circle var(--wf-perf) at 0 50%, #0000 97%, #000) top left / var(--wf-perf) var(--wf-pitch) no-repeat round,
+    radial-gradient(circle var(--wf-perf) at 100% 50%, #0000 97%, #000) top right / var(--wf-perf) var(--wf-pitch) no-repeat round;
+}
+
+/* gold: double border with a thin outer hairline ----------------------------- */
+[data-wf-frame="gold"] .wf-photo-frame {
+  --wf-gold: #b8923a;
+  padding: 0.4rem;
+  background: var(--wf-surface, #fff);
+  border: 4px double var(--wf-gold);
+  outline: 1px solid var(--wf-gold);
+  outline-offset: 3px;
+  box-shadow: 0 0.5rem 1rem -0.5rem rgb(0 0 0 / 0.3);
+}
+
+@media (forced-colors: active) {
+  [data-wf-frame] .wf-photo-frame {
+    border: 1px solid CanvasText;
+  }
+}

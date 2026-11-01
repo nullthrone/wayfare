@@ -1,0 +1,34 @@
+# Firebase App Hosting configuration for Wayfare — intentionally GENERIC.
+# Docs: https://firebase.google.com/docs/app-hosting/configure
+#
+# Everything instance-specific (base URL, admin e-mails, SMTP, login providers, …) lives in ONE
+# Cloud Secret Manager secret, WAYFARE_ENV, as a dotenv block. src/server/config.ts reads it at
+# startup; real environment variables take precedence. FIREBASE_PROJECT_ID and the storage bucket
+# are derived from the environment App Hosting provides.
+#
+# Create/update it with the bootstrap script (scripts/firebase-bootstrap.sh) or manually:
+#   gcloud secrets versions add WAYFARE_ENV --data-file=wayfare.env   (then re-deploy)
+#   firebase apphosting:secrets:grantaccess WAYFARE_ENV --backend wayfare
+# See docs/en/operator/firebase.md.
+#
+# Deliberately NOT set here: WAYFARE_TRUSTED_PROXIES. Real environment variables override the
+# WAYFARE_ENV bundle, so a value in this file would beat the one the bootstrap script measures
+# (number of proxies in front of the app, for rate limiting). It lives in WAYFARE_ENV.
+
+runConfig:
+  cpu: 1
+  memoryMiB: 1024        # image processing (sharp) needs headroom; raise to 2048 for large uploads
+  minInstances: 0        # set to 1 to avoid cold starts (costs money)
+  maxInstances: 3
+  concurrency: 40
+
+env:
+  - variable: WAYFARE_RUNTIME
+    value: firebase
+  - variable: NEXT_TELEMETRY_DISABLED
+    value: "1"
+  # The whole instance configuration (dotenv). Only needed at runtime — `next build` needs no config.
+  - variable: WAYFARE_ENV
+    secret: WAYFARE_ENV
+    availability:
+      - RUNTIME

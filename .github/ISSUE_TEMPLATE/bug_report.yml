@@ -1,0 +1,62 @@
+name: Bug report
+description: Something does not work as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time! Please search existing issues first.
+        **Security problems:** do not file them here, see [SECURITY.md](../blob/main/SECURITY.md).
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment type
+      options:
+        - Self-hosted (Docker / Node)
+        - Firebase (App Hosting + Firestore + Storage)
+        - Local development
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Wayfare version / commit
+      placeholder: "0.1.0 or git sha"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+    validations:
+      required: true
+  - type: dropdown
+    id: storage
+    attributes:
+      label: Storage driver
+      options:
+        - local
+        - s3 (AWS / MinIO / R2 ...)
+        - firebase
+        - unsure
+  - type: input
+    id: browser
+    attributes:
+      label: Browser / OS
+      placeholder: "Safari 18 on iOS 18"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / screenshots
+      description: Server logs or browser console output. Remove secrets (WAYFARE_SECRET, tokens, passwords) first!
+      render: shell

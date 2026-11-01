@@ -1,0 +1,209 @@
+{
+  "tabs": {
+    "label": "Album-Bereiche",
+    "photos": "Fotos",
+    "settings": "Einstellungen",
+    "share": "Teilen",
+    "moderation": "Moderation",
+    "stats": "Statistik"
+  },
+  "header": {
+    "metaTitle": "Album bearbeiten",
+    "back": "Alle Alben",
+    "view": "Ansehen",
+    "publish": "Veröffentlichen",
+    "unpublish": "Zurück zum Entwurf",
+    "published": "Album veröffentlicht",
+    "unpublished": "Album ist wieder ein Entwurf",
+    "status": {
+      "draft": "Entwurf",
+      "published": "Veröffentlicht"
+    },
+    "unpublishConfirm": {
+      "title": "Zurück zum Entwurf?",
+      "description": "Der Link und alle gedruckten QR-Codes funktionieren dann nicht mehr, bis du das Album wieder veröffentlichst.",
+      "confirm": "Zum Entwurf machen"
+    }
+  },
+  "photos": {
+    "title": "{count, plural, =0 {Keine Fotos} one {# Foto} other {# Fotos}}",
+    "upload": {
+      "drop": "Fotos hierher ziehen",
+      "hint": "oder Dateien auswählen – mehrere gleichzeitig möglich",
+      "choose": "Fotos auswählen",
+      "clear": "Liste leeren"
+    },
+    "import": {
+      "title": "Aus der Cloud",
+      "description": "Importiere Fotos aus Google Fotos oder Google Drive."
+    },
+    "pendingNotice": "{count, plural, one {# Gäste-Foto wartet} other {# Gäste-Fotos warten}} auf deine Freigabe.",
+    "pendingLink": "Zur Moderation",
+    "empty": {
+      "title": "Noch keine Fotos",
+      "description": "Ziehe Fotos in den Bereich oben oder importiere sie aus der Cloud."
+    },
+    "caption": "Bildunterschrift",
+    "captionPlaceholder": "Bildunterschrift hinzufügen …",
+    "saved": "Gespeichert",
+    "cover": "Cover",
+    "setCover": "Als Cover festlegen",
+    "fromGuest": "Von {name}",
+    "moveEarlier": "Foto {n} nach vorne verschieben",
+    "moveLater": "Foto {n} nach hinten verschieben",
+    "delete": "Foto löschen",
+    "deleteConfirm": {
+      "title": "Foto löschen?",
+      "description": "Das Foto wird mit allen Kommentaren und Reaktionen endgültig gelöscht.",
+      "confirm": "Löschen"
+    }
+  },
+  "settings": {
+    "saved": "Einstellungen gespeichert",
+    "save": "Änderungen speichern",
+    "general": {
+      "title": "Allgemein",
+      "name": "Titel",
+      "message": "Grußtext",
+      "messageHint": "Wird auf dem Cover angezeigt.",
+      "theme": "Thema"
+    },
+    "access": {
+      "title": "Zugriff",
+      "description": "Wer das Album über den Link oder QR-Code öffnen kann.",
+      "mode": "Zugriffsart",
+      "modes": {
+        "link": "Jeder mit dem Link",
+        "password": "Mit Passwort"
+      },
+      "password": "Passwort",
+      "newPassword": "Neues Passwort",
+      "passwordHint": "Mindestens 6 Zeichen. Gib das Passwort separat weiter.",
+      "passwordKeep": "Leer lassen, um das aktuelle Passwort zu behalten.",
+      "passwordWarning": "Wenn du das Passwort änderst, werden alle Personen abgemeldet, die das Album bereits geöffnet haben.",
+      "expires": "Ablaufdatum",
+      "expiresHint": "Danach ist das Album für Gäste nicht mehr erreichbar. Leer lassen für unbegrenzt."
+    },
+    "downloads": {
+      "title": "Downloads",
+      "description": "Darf man die Originalfotos herunterladen?",
+      "allowed": "Downloads erlauben",
+      "allowedHint": "Gäste können die Fotos in Originalqualität speichern.",
+      "protectionNote": "Ohne Downloads werden nur verkleinerte Ansichten ausgeliefert und Rechtsklick sowie Ziehen sind gesperrt. Screenshots lassen sich technisch nicht verhindern.",
+      "watermark": "Wasserzeichen einblenden",
+      "watermarkHint": "Ein dezenter Text wird in die Ansichten eingerechnet.",
+      "watermarkText": "Wasserzeichen-Text",
+      "watermarkTextHint": "Leer = Albumtitel."
+    },
+    "interaction": {
+      "title": "Interaktion",
+      "comments": "Kommentare",
+      "commentModes": {
+        "post": "Sofort veröffentlichen",
+        "pre": "Erst nach meiner Freigabe",
+        "off": "Aus"
+      },
+      "reactions": "Reaktionen erlauben",
+      "reactionsHint": "Gäste können mit den Emojis des Themes reagieren.",
+      "guestUploads": "Foto-Uploads von Gästen",
+      "guestUploadsHint": "Angemeldete Gäste können Fotos einreichen. Sie erscheinen erst nach deiner Freigabe.",
+      "guestLimit": "Maximal pro Gast",
+      "guestLimitHint": "Anzahl Fotos, die eine Person einreichen darf."
+    },
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "label": "E-Mail-Benachrichtigungen",
+      "hint": "Bei neuen Kommentaren, Gäste-Fotos und Meldungen.",
+      "modes": {
+        "off": "Aus",
+        "instant": "Sofort",
+        "daily": "Tägliche Zusammenfassung"
+      }
+    },
+    "danger": {
+      "title": "Gefahrenzone",
+      "description": "Das Löschen entfernt Album, Fotos, Kommentare und Reaktionen unwiderruflich. Verteilte QR-Codes führen ins Leere.",
+      "button": "Album löschen",
+      "confirmTitle": "Album endgültig löschen?",
+      "confirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "typeTitle": "Tippe zur Bestätigung den Titel ein: {title}",
+      "confirm": "Endgültig löschen",
+      "mismatch": "Der eingegebene Titel stimmt nicht überein."
+    }
+  },
+  "share": {
+    "draft": {
+      "title": "Noch nicht veröffentlicht",
+      "description": "Veröffentliche das Album, damit der Link funktioniert. Bis dahin sehen nur du und Admins das Album."
+    },
+    "rotate": {
+      "title": "Link erneuern",
+      "description": "Erzeugt einen neuen Link und QR-Code. Der alte Link und bereits gedruckte Karten funktionieren danach nicht mehr.",
+      "button": "Link widerrufen & neuen QR-Code erzeugen",
+      "confirmTitle": "Link wirklich widerrufen?",
+      "confirmDescription": "Alle bisher verteilten Links und QR-Codes – auch gedruckte Karten – hören sofort auf zu funktionieren. Du musst den neuen Code erneut verteilen.",
+      "confirm": "Widerrufen & erneuern",
+      "done": "Neuer Link erzeugt"
+    }
+  },
+  "moderation": {
+    "approve": "Freigeben",
+    "reject": "Ablehnen",
+    "hide": "Ausblenden",
+    "empty": {
+      "title": "Alles erledigt",
+      "description": "Es gibt nichts zu prüfen."
+    },
+    "photos": {
+      "title": "Gäste-Fotos",
+      "description": "Diese Fotos wurden von Gästen eingereicht und sind noch nicht sichtbar.",
+      "by": "{name} · {date}"
+    },
+    "comments": {
+      "title": "Kommentare zur Freigabe",
+      "description": "Diese Kommentare sind erst nach deiner Freigabe sichtbar."
+    },
+    "reports": {
+      "title": "Meldungen",
+      "description": "Gäste haben diese Kommentare gemeldet.",
+      "reason": "Grund",
+      "noReason": "Kein Grund angegeben",
+      "commentGone": "Der Kommentar existiert nicht mehr.",
+      "resolve": "Als erledigt markieren",
+      "delete": "Kommentar löschen",
+      "block": "Nutzer sperren",
+      "deleteConfirm": {
+        "title": "Kommentar löschen?",
+        "description": "Der Kommentar wird endgültig entfernt.",
+        "confirm": "Löschen"
+      }
+    },
+    "block": {
+      "title": "Gesperrte Nutzer",
+      "description": "Gesperrte Personen können in diesem Album weder kommentieren noch reagieren oder Fotos einreichen.",
+      "empty": "Niemand ist gesperrt.",
+      "unblock": "Entsperren",
+      "unknownUser": "Unbekannte Person",
+      "confirmTitle": "{name} sperren?",
+      "confirmDescription": "Die Person kann in diesem Album nicht mehr interagieren; ihre Kommentare werden ausgeblendet.",
+      "confirm": "Sperren"
+    }
+  },
+  "stats": {
+    "views": "Aufrufe",
+    "photos": "Fotos",
+    "comments": "Kommentare",
+    "reactions": "Reaktionen",
+    "lastViewed": "Zuletzt angesehen: {date}",
+    "neverViewed": "Noch nicht angesehen.",
+    "top": {
+      "title": "Beliebteste Fotos",
+      "description": "Nach Aufrufen und Reaktionen.",
+      "empty": "Noch keine Daten."
+    },
+    "privacy": {
+      "title": "Datenschutzfreundlich gezählt",
+      "text": "Aufrufe werden ohne Cookies, Tracking oder gespeicherte IP-Adressen gezählt – jede Person höchstens einmal pro Tag."
+    }
+  }
+}

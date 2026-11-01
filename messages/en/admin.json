@@ -1,1 +1,190 @@
-{}
+{
+  "nav": {
+    "label": "Admin sections",
+    "overview": "Overview",
+    "users": "Users",
+    "requests": "Requests",
+    "invites": "Invites",
+    "settings": "Settings",
+    "themes": "Themes"
+  },
+  "overview": {
+    "title": "Administration",
+    "subtitle": "Keep an eye on your instance.",
+    "users": "Users",
+    "owners": "{count, plural, one {# owner/admin} other {# owners/admins}}",
+    "requests": "Open requests",
+    "requestsSub": "Waiting for a decision",
+    "invites": "Active invites",
+    "invitesSub": "Not redeemed yet",
+    "themes": "Custom themes",
+    "themesSub": "{count} public"
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "Assign roles and ban accounts.",
+    "search": "Search",
+    "searchPlaceholder": "Name or e-mail",
+    "searchButton": "Search",
+    "empty": "No users found.",
+    "columns": {
+      "user": "User",
+      "role": "Role",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "roleFor": "Role",
+    "roles": {
+      "viewer": "Viewer",
+      "owner": "Owner",
+      "admin": "Admin"
+    },
+    "roleSaved": "Role saved",
+    "you": "You",
+    "bannedBadge": "Banned",
+    "ban": "Ban",
+    "unban": "Unban",
+    "banned": "User banned",
+    "unbanned": "User unbanned",
+    "banConfirm": {
+      "title": "Ban user?",
+      "description": "They can no longer sign in or interact anywhere.",
+      "confirm": "Ban"
+    },
+    "pagination": "Pagination",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page {page}"
+  },
+  "requests": {
+    "title": "Owner requests",
+    "subtitle": "People who would like to create albums.",
+    "empty": {
+      "title": "No open requests",
+      "description": "New requests appear here."
+    },
+    "approve": "Approve",
+    "deny": "Decline",
+    "approvedToast": "Request approved",
+    "deniedToast": "Request declined",
+    "noMessage": "No message left.",
+    "history": "Recently decided",
+    "status": {
+      "approved": "Approved",
+      "denied": "Declined"
+    }
+  },
+  "invites": {
+    "title": "Invites",
+    "subtitle": "Invite people straight into the owner role – works in every mode.",
+    "form": {
+      "title": "New invite",
+      "email": "E-mail (optional)",
+      "emailHint": "If a mail server is configured, the link is sent right away.",
+      "validDays": "Valid (days)",
+      "create": "Create invite"
+    },
+    "created": {
+      "title": "Invite created",
+      "mailed": "The link was sent to {email}."
+    },
+    "empty": {
+      "title": "No invites yet",
+      "description": "Create an invite and share the link."
+    },
+    "columns": {
+      "invite": "Invite",
+      "status": "Status",
+      "expires": "Valid until",
+      "actions": "Actions"
+    },
+    "noEmail": "No e-mail",
+    "createdOn": "Created on {date}",
+    "status": {
+      "active": "Active",
+      "used": "Redeemed",
+      "expired": "Expired"
+    },
+    "copyLink": "Copy link",
+    "revoke": "Revoke",
+    "revokeConfirm": {
+      "title": "Revoke invite?",
+      "description": "The link stops working afterwards.",
+      "confirm": "Revoke"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "The basics of your Wayfare instance.",
+    "save": "Save settings",
+    "saved": "Settings saved",
+    "general": {
+      "title": "General",
+      "name": "Instance name",
+      "nameHint": "Shown in the header, the browser tab and e-mails.",
+      "maxUpload": "Max. file size (MB)",
+      "maxUploadHint": "Per photo.",
+      "maxPhotos": "Max. photos per album",
+      "maxPhotosHint": "0 = unlimited."
+    },
+    "onboarding": {
+      "title": "Who may create albums?",
+      "description": "Defines how people get the owner role.",
+      "legend": "Owner onboarding",
+      "modes": {
+        "open": {
+          "label": "Open",
+          "description": "Anyone signed in can create albums immediately."
+        },
+        "approval": {
+          "label": "With approval",
+          "description": "People submit a request, you decide."
+        },
+        "invite": {
+          "label": "Invitation only",
+          "description": "Only people with an invite link become owners."
+        }
+      }
+    },
+    "legal": {
+      "title": "Legal pages",
+      "description": "Markdown. Empty pages don’t appear in the footer.",
+      "imprint": "Imprint",
+      "privacy": "Privacy policy",
+      "hint": "Markdown is sanitised when displayed.",
+      "preview": "Show preview",
+      "hidePreview": "Hide preview",
+      "emptyPreview": "Nothing to preview – the field is empty."
+    }
+  },
+  "themes": {
+    "title": "Custom themes",
+    "subtitle": "Publish owners’ themes for the whole instance.",
+    "empty": {
+      "title": "No custom themes yet",
+      "description": "Once owners create themes in the theme builder they show up here."
+    },
+    "columns": {
+      "theme": "Theme",
+      "occasion": "Occasion",
+      "updated": "Updated",
+      "public": "Public"
+    },
+    "publishFor": "Publish “{name}” for everyone",
+    "occasions": {
+      "birthday": "Birthday",
+      "wedding": "Wedding",
+      "baby": "Baby",
+      "christmas": "Christmas",
+      "easter": "Easter",
+      "new-year": "New Year",
+      "travel": "Travel",
+      "thank-you": "Thank you",
+      "anniversary": "Anniversary",
+      "graduation": "Graduation",
+      "valentine": "Valentine’s Day",
+      "memorial": "Memorial",
+      "neutral": "Neutral"
+    }
+  }
+}

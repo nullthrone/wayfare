@@ -1,1 +1,45 @@
-{}
+{
+  "tagline": "Photo albums like postcards – only better",
+  "description": "Share photo albums with friends via QR code – with themes, reactions and no tracking.",
+  "homeAria": "{name} – home",
+  "signIn": "Sign in",
+  "signOut": "Sign out",
+  "cancel": "Cancel",
+  "close": "Close",
+  "copy": "Copy",
+  "copied": "Copied",
+  "language": "Language",
+  "languages": {
+    "de": "Deutsch",
+    "en": "English"
+  },
+  "skipToContent": "Skip to content",
+  "userMenu": "User menu",
+  "genericError": "Something went wrong. Please try again.",
+  "queued": "Queued",
+  "uploads": "Uploads",
+  "nav": {
+    "dashboard": "Dashboard",
+    "albums": "Albums",
+    "themes": "Themes",
+    "account": "Account",
+    "admin": "Admin",
+    "dashboardLabel": "Section navigation"
+  },
+  "footer": {
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "legal": "Legal",
+    "powered": "Powered by Wayfare"
+  },
+  "notFound": {
+    "title": "There’s nothing here",
+    "description": "The page doesn’t exist or the link is no longer valid.",
+    "home": "Back to home"
+  },
+  "error": {
+    "title": "That didn’t work",
+    "description": "An unexpected error occurred. Please try again.",
+    "retry": "Try again"
+  }
+}

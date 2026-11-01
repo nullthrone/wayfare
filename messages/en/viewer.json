@@ -1,1 +1,77 @@
-{}
+{
+  "meta": {
+    "description": "A shared photo album on Wayfare."
+  },
+  "notFound": {
+    "title": "Album not found"
+  },
+  "footer": "Shared with Wayfare",
+  "draftBanner": "Draft – only you can see this album. Publish it so the link works for others.",
+  "bar": {
+    "edit": "Edit",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "expired": {
+    "description": "This album has expired and is no longer available.",
+    "hint": "Ask the person who sent you the link whether they can share it again."
+  },
+  "gate": {
+    "description": "This album is protected by a password.",
+    "password": "Password",
+    "unlock": "Open album",
+    "wrong": "That password isn’t right. Please try again."
+  },
+  "empty": {
+    "title": "Photos are coming soon",
+    "description": "This album is still empty."
+  },
+  "gallery": {
+    "count": "{count, plural, one {# photo} other {# photos}}",
+    "photoAlt": "Photo {n}",
+    "open": "Open photo: {caption}",
+    "openN": "Open photo {n} of {total}"
+  },
+  "lightbox": {
+    "label": "Photo viewer",
+    "close": "Close",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "download": "Download",
+    "counter": "{n} / {total}",
+    "photoAlt": "Photo {n} of {total}"
+  },
+  "reactions": {
+    "label": "Reactions",
+    "loginLink": "Sign in",
+    "loginSuffix": "to react.",
+    "failed": "That didn’t work. Please try again."
+  },
+  "comments": {
+    "title": "Comments",
+    "loading": "Loading comments …",
+    "loadFailed": "Comments couldn’t be loaded.",
+    "empty": "No comments yet.",
+    "awaiting": "Awaiting approval",
+    "write": "Write a comment",
+    "placeholder": "Write something nice …",
+    "send": "Send comment",
+    "preHint": "Comments appear once the album owner has approved them.",
+    "pendingNotice": "Thanks! Your comment will appear once it’s approved.",
+    "delete": "Delete",
+    "report": "Report",
+    "reported": "Reported",
+    "reportReason": "What’s wrong with this comment?",
+    "reportSend": "Send report",
+    "loginLink": "Sign in",
+    "loginSuffix": "to comment."
+  },
+  "upload": {
+    "button": "Contribute your photos",
+    "loginButton": "Sign in to contribute photos",
+    "choose": "Choose photos",
+    "hint": "Your photos appear once the album owner approves them.",
+    "clear": "Clear list",
+    "afterApproval": "{count, plural, one {# photo was uploaded} other {# photos were uploaded}} and will become visible once approved."
+  }
+}

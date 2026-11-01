@@ -1,1 +1,45 @@
-{}
+{
+  "tagline": "Fotoalben wie Postkarten – nur moderner",
+  "description": "Teile Fotoalben mit Freunden per QR-Code – mit Themes, Reaktionen und ohne Tracking.",
+  "homeAria": "{name} – zur Startseite",
+  "signIn": "Anmelden",
+  "signOut": "Abmelden",
+  "cancel": "Abbrechen",
+  "close": "Schließen",
+  "copy": "Kopieren",
+  "copied": "Kopiert",
+  "language": "Sprache",
+  "languages": {
+    "de": "Deutsch",
+    "en": "English"
+  },
+  "skipToContent": "Zum Inhalt springen",
+  "userMenu": "Benutzermenü",
+  "genericError": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+  "queued": "Wartet",
+  "uploads": "Uploads",
+  "nav": {
+    "dashboard": "Dashboard",
+    "albums": "Alben",
+    "themes": "Themes",
+    "account": "Konto",
+    "admin": "Admin",
+    "dashboardLabel": "Bereichsnavigation"
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "legal": "Rechtliches",
+    "powered": "Powered by Wayfare"
+  },
+  "notFound": {
+    "title": "Hier ist leider nichts zu finden",
+    "description": "Die Seite existiert nicht oder der Link ist nicht mehr gültig.",
+    "home": "Zur Startseite"
+  },
+  "error": {
+    "title": "Das hat nicht geklappt",
+    "description": "Es ist ein unerwarteter Fehler aufgetreten. Versuche es bitte noch einmal.",
+    "retry": "Erneut versuchen"
+  }
+}

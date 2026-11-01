@@ -1,1 +1,65 @@
-{}
+{
+  "hero": {
+    "eyebrow": "Photo albums to pass on",
+    "title": "Photo albums that feel like a postcard.",
+    "subtitle": "Upload your best photos, pick a theme for the occasion and share the album with a QR code – on screen or printed on a real card. Your guests open it with a single scan.",
+    "cta": "Get started",
+    "secondary": "How it works"
+  },
+  "how": {
+    "title": "Three steps to a shared album",
+    "upload": {
+      "title": "Collect photos",
+      "description": "Upload pictures or import them from Google Photos and Google Drive. Guests can contribute their own – once you approve them."
+    },
+    "theme": {
+      "title": "Pick a theme",
+      "description": "Birthday, wedding, memorial … every occasion gets its own colours, type, frames and matching reactions."
+    },
+    "share": {
+      "title": "Share the QR code",
+      "description": "Show the code on screen, print it on a card or send the link. Optionally with a password and an expiry date."
+    }
+  },
+  "themes": {
+    "title": "The right look for every occasion",
+    "subtitle": "Thirteen themes come built in. Design your own with the theme builder."
+  },
+  "features": {
+    "title": "Made for people, not for statistics",
+    "reactions": {
+      "title": "Reactions with feeling",
+      "description": "Every theme brings its own emoji reactions – from confetti to candles."
+    },
+    "comments": {
+      "title": "Comments with moderation",
+      "description": "Publish comments right away, review them first or switch them off entirely."
+    },
+    "guests": {
+      "title": "Photos from guests",
+      "description": "Guests upload pictures, you decide what appears in the album."
+    },
+    "control": {
+      "title": "You stay in control",
+      "description": "Password protection, expiry date, download protection with watermark and a link you can revoke at any time."
+    },
+    "privacy": {
+      "title": "Privacy without compromise",
+      "description": "No tracking, no ads, no third-party servers in the browser. Views are counted anonymously."
+    },
+    "openSource": {
+      "title": "Open and self-hostable",
+      "description": "Wayfare is open source. Run your own instance – on your server or on Firebase."
+    }
+  },
+  "final": {
+    "title": "Ready for your first album?",
+    "subtitle": "Sign in, upload photos, share the QR code – done.",
+    "github": "View on GitHub"
+  },
+  "viewerCard": {
+    "title": "Want to share albums yourself?",
+    "description": "You’re signed in and can view albums. To create your own you need the “owner” role.",
+    "cta": "Request the owner role"
+  }
+}

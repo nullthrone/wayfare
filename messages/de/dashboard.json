@@ -1,1 +1,69 @@
-{}
+{
+  "albums": {
+    "title": "Deine Alben",
+    "subtitle": "Alle Alben, die du erstellt hast.",
+    "new": "Neues Album",
+    "empty": {
+      "title": "Noch kein Album",
+      "description": "Erstelle dein erstes Album, lade Fotos hoch und teile es per QR-Code."
+    },
+    "status": {
+      "draft": "Entwurf",
+      "published": "Veröffentlicht"
+    },
+    "photoCount": "{count, plural, =0 {Keine Fotos} one {# Foto} other {# Fotos}}",
+    "viewCount": "{count, plural, one {# Aufruf} other {# Aufrufe}}",
+    "expired": "Abgelaufen",
+    "expiresOn": "Bis {date}"
+  },
+  "newAlbum": {
+    "title": "Neues Album",
+    "subtitle": "Gib dem Album einen Namen und wähle ein Thema. Fotos fügst du im nächsten Schritt hinzu.",
+    "back": "Zurück zu den Alben",
+    "fields": {
+      "title": "Titel",
+      "titlePlaceholder": "z. B. Omas 80. Geburtstag",
+      "message": "Grußtext",
+      "messageHint": "Wird auf dem Cover des Albums angezeigt – wie die Rückseite einer Postkarte.",
+      "messagePlaceholder": "Schön, dass ihr dabei wart!",
+      "theme": "Thema"
+    },
+    "create": "Album erstellen"
+  },
+  "onboarding": {
+    "title": "Eigene Alben teilen",
+    "subtitle": "Mit der Owner-Rolle erstellst du Alben und teilst sie per QR-Code.",
+    "goToDashboard": "Zum Dashboard",
+    "open": {
+      "description": "Auf dieser Instanz kann jede angemeldete Person Alben erstellen. Mit einem Klick bist du dabei.",
+      "cta": "Owner werden"
+    },
+    "approval": {
+      "description": "Auf dieser Instanz entscheidet ein Admin, wer Alben erstellen darf. Schreib kurz, wofür du Wayfare nutzen möchtest.",
+      "message": "Nachricht an den Admin",
+      "messageHint": "Optional – zum Beispiel, wofür du die Alben brauchst.",
+      "cta": "Anfrage senden",
+      "sent": "Anfrage gesendet. Du bekommst Zugriff, sobald ein Admin zugestimmt hat.",
+      "pendingTitle": "Deine Anfrage wird geprüft",
+      "pendingDescription": "Ein Admin schaut sich deine Anfrage an. Schau später noch einmal vorbei.",
+      "approvedTitle": "Anfrage angenommen",
+      "approvedDescription": "Du kannst jetzt Alben erstellen.",
+      "deniedTitle": "Anfrage abgelehnt",
+      "deniedDescription": "Deine letzte Anfrage wurde abgelehnt. Du kannst eine neue Anfrage stellen."
+    },
+    "invite": {
+      "title": "Nur mit Einladung",
+      "description": "Auf dieser Instanz können nur Personen mit einem Einladungslink Alben erstellen. Bitte den Admin um einen Link."
+    },
+    "inviteRedeem": {
+      "title": "Du wurdest eingeladen",
+      "description": "Mit dieser Einladung erhältst du die Rolle „Owner“ und kannst eigene Alben erstellen.",
+      "alreadyOwner": "Du kannst bereits Alben erstellen – diese Einladung brauchst du nicht mehr.",
+      "redeem": "Einladung einlösen",
+      "successTitle": "Willkommen an Bord!",
+      "successDescription": "Du kannst jetzt Alben erstellen.",
+      "goToDashboard": "Zum Dashboard",
+      "invalid": "Diese Einladung ist ungültig, abgelaufen oder wurde bereits verwendet."
+    }
+  }
+}

@@ -1,1 +1,82 @@
-{}
+{
+  "title": "Dein Konto",
+  "roles": {
+    "viewer": "Viewer",
+    "owner": "Owner",
+    "admin": "Admin"
+  },
+  "profile": {
+    "title": "Profil",
+    "name": "Name",
+    "email": "E-Mail-Adresse",
+    "emailHint": "Die E-Mail-Adresse kann nicht geändert werden.",
+    "save": "Speichern",
+    "saved": "Profil gespeichert.",
+    "failed": "Das Profil konnte nicht gespeichert werden."
+  },
+  "passkeys": {
+    "title": "Passkeys",
+    "description": "Melde dich ohne Passwort mit Fingerabdruck, Gesichtserkennung oder Sicherheitsschlüssel an.",
+    "loading": "Lade …",
+    "empty": "Noch kein Passkey eingerichtet.",
+    "unnamed": "Passkey",
+    "added": "Hinzugefügt am {date}",
+    "remove": "Passkey „{name}“ entfernen",
+    "nameLabel": "Name (optional)",
+    "namePlaceholder": "z. B. MacBook",
+    "add": "Passkey hinzufügen",
+    "failed": "Der Passkey konnte nicht verarbeitet werden."
+  },
+  "sources": {
+    "title": "Foto-Quellen",
+    "description": "Verbundene Dienste für den Foto-Import."
+  },
+  "language": {
+    "title": "Sprache",
+    "description": "Gilt für die Oberfläche auf diesem Gerät."
+  },
+  "session": {
+    "title": "Sitzung",
+    "signOut": "Abmelden"
+  },
+  "delete": {
+    "sectionTitle": "Konto löschen",
+    "description": "Dein Konto und alle zugehörigen Daten werden unwiderruflich gelöscht.",
+    "button": "Konto löschen",
+    "title": "Konto endgültig löschen?",
+    "warning": "Deine Kommentare, Reaktionen und Anmeldungen werden entfernt. Das kann nicht rückgängig gemacht werden.",
+    "warningOwner": "Alle deine Alben mit Fotos, Kommentaren und Reaktionen werden gelöscht, verteilte QR-Codes führen ins Leere. Das kann nicht rückgängig gemacht werden.",
+    "typeEmail": "Tippe zur Bestätigung deine E-Mail-Adresse ein: {email}",
+    "confirm": "Konto endgültig löschen",
+    "mismatch": "Die eingegebene E-Mail-Adresse stimmt nicht überein."
+  },
+  "login": {
+    "title": "Anmelden",
+    "subtitle": "Melde dich an, um Alben zu kommentieren, zu reagieren oder eigene zu erstellen.",
+    "continueWith": "Weiter mit {provider}",
+    "passkey": "Mit Passkey anmelden",
+    "or": "oder",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "du@beispiel.de",
+    "sendLink": "Anmelde-Link senden",
+    "magicHint": "Wir schicken dir einen Link – kein Passwort nötig.",
+    "sent": {
+      "title": "Schau in dein Postfach",
+      "description": "Wir haben einen Anmelde-Link an {email} geschickt. Er ist kurz gültig.",
+      "back": "Andere E-Mail-Adresse verwenden"
+    },
+    "password": {
+      "signinTitle": "Mit E-Mail und Passwort",
+      "signupTitle": "Konto erstellen",
+      "name": "Name",
+      "password": "Passwort",
+      "signin": "Anmelden",
+      "signup": "Konto erstellen",
+      "toSignup": "Noch kein Konto? Registrieren",
+      "toSignin": "Schon ein Konto? Anmelden"
+    },
+    "noMethods": "Auf dieser Instanz ist keine Anmeldemethode eingerichtet. Bitte wende dich an den Betreiber.",
+    "failed": "Die Anmeldung hat nicht geklappt. Bitte versuche es noch einmal.",
+    "legalNote": "Wir speichern nur, was dein Konto braucht – kein Tracking."
+  }
+}

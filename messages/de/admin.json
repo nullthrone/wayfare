@@ -1,1 +1,190 @@
-{}
+{
+  "nav": {
+    "label": "Admin-Bereiche",
+    "overview": "Übersicht",
+    "users": "Nutzer",
+    "requests": "Anfragen",
+    "invites": "Einladungen",
+    "settings": "Einstellungen",
+    "themes": "Themes"
+  },
+  "overview": {
+    "title": "Administration",
+    "subtitle": "Behalte den Überblick über deine Instanz.",
+    "users": "Nutzer",
+    "owners": "{count, plural, one {# Owner/Admin} other {# Owner/Admins}}",
+    "requests": "Offene Anfragen",
+    "requestsSub": "Warten auf Entscheidung",
+    "invites": "Aktive Einladungen",
+    "invitesSub": "Noch nicht eingelöst",
+    "themes": "Eigene Themes",
+    "themesSub": "{count} öffentlich"
+  },
+  "users": {
+    "title": "Nutzer",
+    "subtitle": "Rollen vergeben und Konten sperren.",
+    "search": "Suchen",
+    "searchPlaceholder": "Name oder E-Mail",
+    "searchButton": "Suchen",
+    "empty": "Keine Nutzer gefunden.",
+    "columns": {
+      "user": "Nutzer",
+      "role": "Rolle",
+      "joined": "Registriert",
+      "actions": "Aktionen"
+    },
+    "roleFor": "Rolle",
+    "roles": {
+      "viewer": "Viewer",
+      "owner": "Owner",
+      "admin": "Admin"
+    },
+    "roleSaved": "Rolle gespeichert",
+    "you": "Du",
+    "bannedBadge": "Gesperrt",
+    "ban": "Sperren",
+    "unban": "Entsperren",
+    "banned": "Nutzer gesperrt",
+    "unbanned": "Nutzer entsperrt",
+    "banConfirm": {
+      "title": "Nutzer sperren?",
+      "description": "Die Person kann sich nicht mehr anmelden und nirgends mehr interagieren.",
+      "confirm": "Sperren"
+    },
+    "pagination": "Seitennavigation",
+    "prev": "Zurück",
+    "next": "Weiter",
+    "page": "Seite {page}"
+  },
+  "requests": {
+    "title": "Owner-Anfragen",
+    "subtitle": "Personen, die Alben erstellen möchten.",
+    "empty": {
+      "title": "Keine offenen Anfragen",
+      "description": "Neue Anfragen erscheinen hier."
+    },
+    "approve": "Annehmen",
+    "deny": "Ablehnen",
+    "approvedToast": "Anfrage angenommen",
+    "deniedToast": "Anfrage abgelehnt",
+    "noMessage": "Keine Nachricht hinterlassen.",
+    "history": "Zuletzt entschieden",
+    "status": {
+      "approved": "Angenommen",
+      "denied": "Abgelehnt"
+    }
+  },
+  "invites": {
+    "title": "Einladungen",
+    "subtitle": "Lade Personen direkt in die Owner-Rolle ein – das funktioniert in jedem Modus.",
+    "form": {
+      "title": "Neue Einladung",
+      "email": "E-Mail (optional)",
+      "emailHint": "Ist ein Mailserver konfiguriert, wird der Link direkt verschickt.",
+      "validDays": "Gültig (Tage)",
+      "create": "Einladung erstellen"
+    },
+    "created": {
+      "title": "Einladung erstellt",
+      "mailed": "Der Link wurde an {email} gesendet."
+    },
+    "empty": {
+      "title": "Noch keine Einladungen",
+      "description": "Erstelle eine Einladung und teile den Link."
+    },
+    "columns": {
+      "invite": "Einladung",
+      "status": "Status",
+      "expires": "Gültig bis",
+      "actions": "Aktionen"
+    },
+    "noEmail": "Ohne E-Mail",
+    "createdOn": "Erstellt am {date}",
+    "status": {
+      "active": "Aktiv",
+      "used": "Eingelöst",
+      "expired": "Abgelaufen"
+    },
+    "copyLink": "Link kopieren",
+    "revoke": "Widerrufen",
+    "revokeConfirm": {
+      "title": "Einladung widerrufen?",
+      "description": "Der Link funktioniert danach nicht mehr.",
+      "confirm": "Widerrufen"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Grundlagen deiner Wayfare-Instanz.",
+    "save": "Einstellungen speichern",
+    "saved": "Einstellungen gespeichert",
+    "general": {
+      "title": "Allgemein",
+      "name": "Name der Instanz",
+      "nameHint": "Erscheint im Header, Browser-Tab und in E-Mails.",
+      "maxUpload": "Max. Dateigröße (MB)",
+      "maxUploadHint": "Pro Foto.",
+      "maxPhotos": "Max. Fotos pro Album",
+      "maxPhotosHint": "0 = unbegrenzt."
+    },
+    "onboarding": {
+      "title": "Wer darf Alben erstellen?",
+      "description": "Legt fest, wie Personen zur Owner-Rolle kommen.",
+      "legend": "Owner-Onboarding",
+      "modes": {
+        "open": {
+          "label": "Offen",
+          "description": "Jede angemeldete Person kann sofort Alben erstellen."
+        },
+        "approval": {
+          "label": "Mit Freigabe",
+          "description": "Personen stellen eine Anfrage, du entscheidest."
+        },
+        "invite": {
+          "label": "Nur mit Einladung",
+          "description": "Nur wer einen Einladungslink erhält, wird Owner."
+        }
+      }
+    },
+    "legal": {
+      "title": "Rechtliche Seiten",
+      "description": "Markdown. Leere Seiten erscheinen nicht im Footer.",
+      "imprint": "Impressum",
+      "privacy": "Datenschutzerklärung",
+      "hint": "Markdown wird beim Anzeigen bereinigt.",
+      "preview": "Vorschau anzeigen",
+      "hidePreview": "Vorschau ausblenden",
+      "emptyPreview": "Nichts einzusehen – das Feld ist leer."
+    }
+  },
+  "themes": {
+    "title": "Eigene Themes",
+    "subtitle": "Veröffentliche Themes von Owners für die ganze Instanz.",
+    "empty": {
+      "title": "Noch keine eigenen Themes",
+      "description": "Sobald Owner Themes im Theme-Builder anlegen, erscheinen sie hier."
+    },
+    "columns": {
+      "theme": "Theme",
+      "occasion": "Anlass",
+      "updated": "Geändert",
+      "public": "Öffentlich"
+    },
+    "publishFor": "„{name}“ für alle veröffentlichen",
+    "occasions": {
+      "birthday": "Geburtstag",
+      "wedding": "Hochzeit",
+      "baby": "Baby",
+      "christmas": "Weihnachten",
+      "easter": "Ostern",
+      "new-year": "Neujahr",
+      "travel": "Reise",
+      "thank-you": "Danke",
+      "anniversary": "Jubiläum",
+      "graduation": "Abschluss",
+      "valentine": "Valentinstag",
+      "memorial": "Erinnerung",
+      "neutral": "Neutral"
+    }
+  }
+}

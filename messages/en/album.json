@@ -1,1 +1,209 @@
-{}
+{
+  "tabs": {
+    "label": "Album sections",
+    "photos": "Photos",
+    "settings": "Settings",
+    "share": "Share",
+    "moderation": "Moderation",
+    "stats": "Statistics"
+  },
+  "header": {
+    "metaTitle": "Edit album",
+    "back": "All albums",
+    "view": "View",
+    "publish": "Publish",
+    "unpublish": "Back to draft",
+    "published": "Album published",
+    "unpublished": "Album is a draft again",
+    "status": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "unpublishConfirm": {
+      "title": "Back to draft?",
+      "description": "The link and all printed QR codes stop working until you publish the album again.",
+      "confirm": "Make draft"
+    }
+  },
+  "photos": {
+    "title": "{count, plural, =0 {No photos} one {# photo} other {# photos}}",
+    "upload": {
+      "drop": "Drop photos here",
+      "hint": "or choose files – several at once are fine",
+      "choose": "Choose photos",
+      "clear": "Clear list"
+    },
+    "import": {
+      "title": "From the cloud",
+      "description": "Import photos from Google Photos or Google Drive."
+    },
+    "pendingNotice": "{count, plural, one {# guest photo is} other {# guest photos are}} waiting for your approval.",
+    "pendingLink": "Go to moderation",
+    "empty": {
+      "title": "No photos yet",
+      "description": "Drop photos into the area above or import them from the cloud."
+    },
+    "caption": "Caption",
+    "captionPlaceholder": "Add a caption …",
+    "saved": "Saved",
+    "cover": "Cover",
+    "setCover": "Set as cover",
+    "fromGuest": "From {name}",
+    "moveEarlier": "Move photo {n} earlier",
+    "moveLater": "Move photo {n} later",
+    "delete": "Delete photo",
+    "deleteConfirm": {
+      "title": "Delete photo?",
+      "description": "The photo is permanently deleted together with its comments and reactions.",
+      "confirm": "Delete"
+    }
+  },
+  "settings": {
+    "saved": "Settings saved",
+    "save": "Save changes",
+    "general": {
+      "title": "General",
+      "name": "Title",
+      "message": "Greeting",
+      "messageHint": "Shown on the cover.",
+      "theme": "Theme"
+    },
+    "access": {
+      "title": "Access",
+      "description": "Who can open the album via the link or QR code.",
+      "mode": "Access mode",
+      "modes": {
+        "link": "Anyone with the link",
+        "password": "With password"
+      },
+      "password": "Password",
+      "newPassword": "New password",
+      "passwordHint": "At least 4 characters. Share the password separately.",
+      "passwordKeep": "Leave empty to keep the current password.",
+      "passwordWarning": "Changing the password signs out everyone who has already opened the album.",
+      "expires": "Expiry date",
+      "expiresHint": "After this date guests can no longer open the album. Leave empty for no expiry."
+    },
+    "downloads": {
+      "title": "Downloads",
+      "description": "May people download the original photos?",
+      "allowed": "Allow downloads",
+      "allowedHint": "Guests can save photos in original quality.",
+      "protectionNote": "Without downloads only reduced-size views are delivered, and right-click and dragging are blocked. Screenshots can’t be prevented technically.",
+      "watermark": "Show watermark",
+      "watermarkHint": "A discreet text is rendered into the views.",
+      "watermarkText": "Watermark text",
+      "watermarkTextHint": "Empty = album title."
+    },
+    "interaction": {
+      "title": "Interaction",
+      "comments": "Comments",
+      "commentModes": {
+        "post": "Publish immediately",
+        "pre": "Only after my approval",
+        "off": "Off"
+      },
+      "reactions": "Allow reactions",
+      "reactionsHint": "Guests can react with the theme’s emoji.",
+      "guestUploads": "Guest photo uploads",
+      "guestUploadsHint": "Signed-in guests can submit photos. They only appear after you approve them.",
+      "guestLimit": "Maximum per guest",
+      "guestLimitHint": "Number of photos one person may submit."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "label": "E-mail notifications",
+      "hint": "For new comments, guest photos and reports.",
+      "modes": {
+        "off": "Off",
+        "instant": "Instantly",
+        "daily": "Daily summary"
+      }
+    },
+    "danger": {
+      "title": "Danger zone",
+      "description": "Deleting removes the album, photos, comments and reactions permanently. Distributed QR codes lead nowhere.",
+      "button": "Delete album",
+      "confirmTitle": "Delete album permanently?",
+      "confirmDescription": "This action cannot be undone.",
+      "typeTitle": "To confirm, type the title: {title}",
+      "confirm": "Delete permanently",
+      "mismatch": "The title you entered doesn’t match."
+    }
+  },
+  "share": {
+    "draft": {
+      "title": "Not published yet",
+      "description": "Publish the album so the link works. Until then only you and admins can see it."
+    },
+    "rotate": {
+      "title": "Renew link",
+      "description": "Creates a new link and QR code. The old link and any printed cards stop working afterwards.",
+      "button": "Revoke link & create new QR code",
+      "confirmTitle": "Really revoke the link?",
+      "confirmDescription": "All links and QR codes distributed so far – including printed cards – stop working immediately. You’ll need to distribute the new code again.",
+      "confirm": "Revoke & renew",
+      "done": "New link created"
+    }
+  },
+  "moderation": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "hide": "Hide",
+    "empty": {
+      "title": "All caught up",
+      "description": "There’s nothing to review."
+    },
+    "photos": {
+      "title": "Guest photos",
+      "description": "These photos were submitted by guests and aren’t visible yet.",
+      "by": "{name} · {date}"
+    },
+    "comments": {
+      "title": "Comments awaiting approval",
+      "description": "These comments become visible once you approve them."
+    },
+    "reports": {
+      "title": "Reports",
+      "description": "Guests reported these comments.",
+      "reason": "Reason",
+      "noReason": "No reason given",
+      "commentGone": "The comment no longer exists.",
+      "resolve": "Mark as resolved",
+      "delete": "Delete comment",
+      "block": "Block user",
+      "deleteConfirm": {
+        "title": "Delete comment?",
+        "description": "The comment is removed permanently.",
+        "confirm": "Delete"
+      }
+    },
+    "block": {
+      "title": "Blocked users",
+      "description": "Blocked people can’t comment, react or submit photos in this album.",
+      "empty": "Nobody is blocked.",
+      "unblock": "Unblock",
+      "unknownUser": "Unknown person",
+      "confirmTitle": "Block {name}?",
+      "confirmDescription": "They can no longer interact in this album and their comments are hidden.",
+      "confirm": "Block"
+    }
+  },
+  "stats": {
+    "views": "Views",
+    "photos": "Photos",
+    "comments": "Comments",
+    "reactions": "Reactions",
+    "lastViewed": "Last viewed: {date}",
+    "neverViewed": "Not viewed yet.",
+    "top": {
+      "title": "Most popular photos",
+      "description": "By views and reactions.",
+      "empty": "No data yet."
+    },
+    "privacy": {
+      "title": "Counted in a privacy-friendly way",
+      "text": "Views are counted without cookies, tracking or stored IP addresses – each person at most once per day."
+    }
+  }
+}

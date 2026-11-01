@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "docs/.vitepress/dist/**",
+    "docs/.vitepress/cache/**",
+    "docs/node_modules/**",
+    "data/**",
   ]),
 ]);
 

@@ -15,7 +15,7 @@ The hook (logic in `scripts/check-docs.mjs`, shared with CI and `npm run docs:ch
    `src/server/sources/**`, `src/server/exports/**`, `src/themes/**`, `messages/**`,
    `src/server/config.ts`) but nothing under `docs/en/` **and** `docs/de/` changed, it prints
    `{"decision":"block","reason":"…"}` — Claude then has to update the user/operator docs in both
-   languages (and `e2e/screenshots.spec.ts` for UI changes) or explain why no docs change is needed;
+   languages (and `e2e/screenshots.mjs` for UI changes) or explain why no docs change is needed;
 4. checks that every env key of the zod schema in `src/server/config.ts` appears in
    `docs/en/operator/configuration.md` and `docs/de/operator/configuration.md`;
 5. checks that `docs/en` and `docs/de` contain the same pages.

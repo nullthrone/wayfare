@@ -126,7 +126,7 @@ export function docsChangeProblems(files) {
     return [
       `User-facing code changed (${shown}) but nothing under docs/en/ or docs/de/ was updated. ` +
         "Update the user guide (docs/*/guide) and/or operator guide (docs/*/operator) in BOTH languages" +
-        (uiChanged ? ", and the screenshot scenario e2e/screenshots.spec.ts if the UI changed" : "") +
+        (uiChanged ? ", and the screenshot scenario e2e/screenshots.mjs if the UI changed" : "") +
         ". If no documentation change is needed (pure refactor, internal change), say so explicitly in your reply and why.",
     ];
   }

@@ -32,7 +32,7 @@ export function AlbumHero({
           protect={protect}
           loading="eager"
           fetchPriority="high"
-          className="mx-auto mb-10 aspect-[3/2] w-full max-w-4xl sm:aspect-[16/9]"
+          className="mx-auto mb-8 aspect-[3/2] max-h-[38vh] w-full max-w-4xl sm:mb-10 sm:aspect-[16/9] sm:max-h-[52vh]"
           style={{ backgroundColor: cover.color }}
         />
       ) : null}

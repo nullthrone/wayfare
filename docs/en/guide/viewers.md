@@ -8,6 +8,10 @@ Scan the **QR code** with your phone's camera or tap the link. The album opens i
 
 ![Album cover](/screenshots/en/viewer-cover.png)
 
+On a phone the album adapts to the screen:
+
+![Album on a phone](/screenshots/en/viewer-mobile.png){width=240}
+
 If the album is **password protected**, you'll see a lock screen. Ask the sender for the password.
 
 ![Password screen](/screenshots/en/viewer-password.png)

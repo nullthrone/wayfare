@@ -169,7 +169,7 @@ dialog.wf-lightbox {
   margin: 0;
   padding: 0;
   border: 0;
-  background: rgb(10 9 8 / 0.94);
+  background: rgb(10 9 8); /* opaque: page text must not shine through the letterbox bars */
   color: #fff;
   overflow: hidden;
 }

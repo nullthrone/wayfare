@@ -8,6 +8,10 @@ Scanne den **QR-Code** mit der Handykamera oder tippe auf den Link. Das Album ö
 
 ![Album-Cover](/screenshots/de/viewer-cover.png)
 
+Auf dem Handy passt sich das Album dem Bildschirm an:
+
+![Album auf dem Handy](/screenshots/de/viewer-mobile.png){width=240}
+
 Ist das Album **passwortgeschützt**, siehst du einen Sperrbildschirm. Frag die Person, die es geteilt hat, nach dem Passwort.
 
 ![Passwortabfrage](/screenshots/de/viewer-password.png)

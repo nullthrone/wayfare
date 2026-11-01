@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { ToastProvider } from "@/components/ui/Toast";
+import { config } from "@/server/config";
 import { getInstanceSettings } from "@/server/services/admin";
 import "./globals.css";
 import "@/themes/fonts.css";
@@ -11,7 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("common");
   const settings = await getInstanceSettings().catch(() => null);
   const name = settings?.instanceName || "Wayfare";
+  let metadataBase: URL | undefined;
+  try {
+    metadataBase = new URL(config().baseUrl); // resolves relative Open Graph / icon URLs
+  } catch {
+    /* config not available (e.g. build without env) */
+  }
   return {
+    metadataBase,
     title: { default: `${name} – ${t("tagline")}`, template: `%s · ${name}` },
     description: t("description"),
     applicationName: name,

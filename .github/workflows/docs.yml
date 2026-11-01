@@ -8,6 +8,7 @@ on:
       - "docs/**"
       - "messages/**"
       - "e2e/**"
+      - "scripts/**"
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
@@ -28,8 +29,9 @@ jobs:
       WAYFARE_SECRET: docs-demo-secret-0123456789-0123456789-abcdef
       WAYFARE_BASE_URL: http://localhost:3000
       WAYFARE_DEMO_MODE: "true"
-      WAYFARE_ADMIN_EMAILS: admin@example.com
-      DATA_DIR: ./data-demo
+      WAYFARE_ADMIN_EMAILS: admin@wayfare.demo
+      # absolute: the standalone server chdirs into .next/standalone
+      DATA_DIR: ${{ github.workspace }}/data-demo
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
@@ -41,11 +43,14 @@ jobs:
       - run: npm run build
 
       - name: Seed demo data
-        run: npm run seed
+        run: npm run seed -- --reset
 
       - name: Start app in demo mode
         run: |
-          nohup npm start > app.log 2>&1 &
+          # output: "standalone" → run the standalone server (same as the Docker image)
+          cp -r .next/static .next/standalone/.next/static
+          cp -r public .next/standalone/public
+          PORT=3000 HOSTNAME=127.0.0.1 nohup node .next/standalone/server.js > app.log 2>&1 &
           for i in $(seq 1 60); do
             curl -fsS http://localhost:3000/api/health && exit 0
             sleep 2

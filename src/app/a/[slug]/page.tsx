@@ -13,6 +13,7 @@ import { ViewerBar } from "@/components/viewer/ViewerBar";
 import { ViewerFooter } from "@/components/viewer/ViewerFooter";
 import type { Theme } from "@/domain/theme";
 import { recordAlbumView, resolveAlbumAccess } from "@/server/services/albums";
+import { canManageAlbum } from "@/server/repo";
 import { getUserReactions } from "@/server/services/interactions";
 import { getPhoto, listPhotos, mediaUrl } from "@/server/services/photos";
 import { resolveTheme } from "@/server/services/themes";
@@ -91,7 +92,8 @@ export default async function AlbumPage({ params }: PageProps<"/a/[slug]">) {
   }
 
   const { album } = access;
-  await recordAlbumView(album).catch(() => undefined);
+  // Owners/admins previewing their own album must not inflate the statistics.
+  if (!canManageAlbum(viewer, album)) await recordAlbumView(album).catch(() => undefined);
 
   const [photos, mine, locale] = await Promise.all([
     listPhotos(album.id, "approved"),

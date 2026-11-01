@@ -64,7 +64,7 @@ jobs:
             3. Update the affected pages in BOTH languages (German uses informal "du"). Every env key in
                src/server/config.ts must appear in docs/{en,de}/operator/configuration.md.
                Run `node scripts/check-docs.mjs` and fix what it reports.
-            4. If the UI changed, update the screenshot scenario in e2e/screenshots.spec.ts.
+            4. If the UI changed, update the screenshot scenario in e2e/screenshots.mjs.
             5. If nothing user-facing changed (refactors, tests, internal code), do NOT open a PR; just stop.
             6. Otherwise create a branch `docs/sync-${{ github.sha }}`, commit with the message
                `docs: sync with ${{ github.sha }}`, push it and open a pull request titled

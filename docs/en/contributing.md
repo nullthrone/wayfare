@@ -22,7 +22,7 @@ Run `npm run lint && npm run typecheck && npm test` before opening a PR. Use [Co
 
 ## Documentation rules
 
-Any change that users or operators can notice must update `docs/en/**` **and** `docs/de/**`. New environment variables go into `docs/{en,de}/operator/configuration.md`. If the UI changed, update the screenshot scenario `e2e/screenshots.spec.ts`.
+Any change that users or operators can notice must update `docs/en/**` **and** `docs/de/**`. New environment variables go into `docs/{en,de}/operator/configuration.md`. If the UI changed, update the screenshot scenario `e2e/screenshots.mjs`.
 
 ```bash
 npm run docs:dev      # live preview of this site
@@ -37,6 +37,22 @@ Three layers work together so documentation does not rot:
 1. **Claude Code Stop hook** (`.claude/settings.json` → `.claude/hooks/docs-sync-check.mjs`). When you work with Claude Code and finish a turn, the hook compares your changes (against `origin/main` plus uncommitted files) with the docs. If user-facing code changed without docs changes — or an env key from `src/server/config.ts` is missing in the configuration reference — it blocks the stop and tells Claude to update the docs in both languages, or explain why none are needed. The same logic is available as `npm run docs:check` (`scripts/check-docs.mjs`), also used by CI.
 2. **`claude-docs` workflow** (`.github/workflows/claude-docs.yml`). On pushes to `main` that touch `src/**` or `messages/**`, the Claude Code GitHub Action compares the diff with the docs and opens a pull request `docs: sync with <sha>` if something needs updating. It needs the repository secret `ANTHROPIC_API_KEY`; without it the job is skipped.
 3. **`docs` workflow** (`.github/workflows/docs.yml`). On pushes to `main` it builds the app, starts it in demo mode with seed data (`npm run seed`), takes the screenshots with Playwright (`npm run screenshots` → `docs/public/screenshots/{de,en}/*.png`), builds this VitePress site and deploys it to GitHub Pages. Screenshots are therefore always current and never committed by hand.
+
+## Demo data & screenshots locally
+
+The screenshots are generated from a seeded demo instance (German-first content, real thumbnails, comments, moderation queue, a custom theme). To reproduce them:
+
+```bash
+export WAYFARE_SECRET=docs-demo-secret-0123456789-0123456789-abcdef
+export WAYFARE_DEMO_MODE=true WAYFARE_BASE_URL=http://localhost:3000 DATA_DIR=./data-demo
+npm run build
+npm run seed -- --reset   # --reset wipes DATA_DIR first; refuses to run without WAYFARE_DEMO_MODE=true
+npm start &               # then, in another shell:
+npx playwright install chromium   # once
+npm run screenshots       # writes docs/public/screenshots/{de,en}/*.png
+```
+
+All demo accounts share the password `wayfare-demo`: `admin@wayfare.demo` (admin), `thomas@wayfare.demo` (owner), and the guests `mia@`, `jonas@`, `oma.erika@` and `ben@wayfare.demo`. The password-protected wedding album uses the album password `lena-jonas`. Photos are taken from `e2e/fixtures/photos/<name>.jpg` when present (see `PROMPTS.md` there); missing files are replaced by generated placeholders. Details: [`e2e/README.md`](https://github.com/nullthrone/wayfare/blob/main/e2e/README.md).
 
 ## Support the project
 

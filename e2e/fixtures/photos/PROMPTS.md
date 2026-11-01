@@ -3,7 +3,7 @@
 The sample photos in this folder are **synthetic images generated with Google Gemini** and are used
 only for demo seed data and documentation screenshots. They are dedicated to the public domain under
 [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) as far as any rights exist
-(see `LICENSES.md`). They depict no real, identifiable persons.
+(see `LICENSES.md`). They depict no real persons.
 
 Wayfare's source code is MIT-licensed; these images are separate assets and not covered by the MIT license.
 

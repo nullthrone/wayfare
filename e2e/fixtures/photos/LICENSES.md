@@ -12,8 +12,8 @@
 - **Rights:** purely machine-generated images are generally not protected by copyright (no human
   authorship); the CC0 dedication waives any rights that might nevertheless exist. The generator's terms
   do not claim ownership of generated output.
-- **Persons:** the images show no real or identifiable persons, so no personality rights / model releases
-  are involved.
+- **Persons:** the images show no real persons. A few images (`birthday-03`, `wedding-03`) contain small,
+  synthetic figures that do not depict existing people, so no personality rights / model releases are involved.
 - **Processing:** resized to max. 1600 px and stripped of all metadata before committing.
 - **Missing files:** the seed script (`scripts/seed.ts`) falls back to procedural placeholders, so the
   repository works without them.
